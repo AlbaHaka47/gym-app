@@ -10,7 +10,7 @@
 
     <!-- 1. EL ENCABEZADO (Header) -->
     <header>
-        <nav>
+        <nav class="navbar">
             <!-- Logo -->
             <div class="logo">
                 <h1>AnyWhereFit</h1>
@@ -24,7 +24,7 @@
             </ul>
 
             <!-- Menú hamburguesa -->
-            <div class="hamburguesa">
+            <div class="hamburguesa" id="menu-toggle">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -57,11 +57,13 @@
                 <article class="categoria-card">
                     <h3>Gimnasio</h3>
                     <p>Uso de máquinas y pesas pesadas.</p>
+                     <a href="#">Ver entrenamientos</a>
                 </article>
                 <!-- Tarjeta 3 -->
                 <article class="categoria-card">
                     <h3>Aire Libre</h3>
                     <p>Parques, calistenia y running.</p>
+                    <a href="#">Ver entrenamientos</a>
                 </article>
             </div>
         </section>
@@ -69,75 +71,80 @@
         <!-- Entrenamientos destacados -->
         <section id="entrenamientos">
             <h2>Entrenamientos destacados</h2>
+            
+                <div class="entrenamientos-grid">
+                    <!-- Entrenamiento 1 -->
+                    <article class="entrenamiento-card" data-categoria="gimnasio">
+                        <div class="entrenamiento-imagen">
+                            <span>FUERZA</span>
+                        </div>
+                        <div class="entrenamiento-contenido">
+                            <h3>Fuerza y músculo</h3>
+                            <p>Entrenamiento para ganar fuerza y desarrollar masa muscular.</p>
+                            <a href="#">Ver entrenamiento →</a>
+                        </div>
+                    </article>
 
-            <div class="entrenamientos-grid">
+                    <!-- Entrenamiento 2 -->
+                    <article class="entrenamiento-card" data-categoria="casa">
+                        <div class="entrenamiento-imagen">
+                            <span>CARDIO</span>
+                        </div>
+                        <div class="entrenamiento-contenido">
+                            <h3>Cardio intenso</h3>
+                            <p>Mejora tu resistencia y quema calorías con sesiones intensas.</p>
+                            <a href="#">Ver entrenamiento →</a>
+                        </div>
+                    </article>
 
-                <article class="entrenamiento-card">
-                    <div class="entrenamiento-imagen">
-                        <span>FUERZA</span>
-                    </div>
+                    <!-- Entrenamiento 3 -->
+                    <article class="entrenamiento-card" data-categoria="aire_libre">
+                        <div class="entrenamiento-imagen">
+                            <span>CALISTENIA</span>
+                        </div>
+                        <div class="entrenamiento-contenido">
+                            <h3>Calistenia</h3>
+                            <p>Entrena utilizando el peso de tu propio cuerpo.</p>
+                            <a href="#">Ver entrenamiento →</a>
+                        </div>
+                    </article>
+                </div>
+        </section>
 
-                    <div class="entrenamiento-contenido">
-                        <h3>Fuerza y músculo</h3>
-                        <p>
-                            Entrenamiento para ganar fuerza y desarrollar masa muscular.</p>
+        <!-- Sección Generador de Rutinas -->
+        <section id="generador">
+            <h2>Genera tu Rutina Personalizada</h2>
+            <p>Cuéntanos tus datos y te mostraremos el entrenamiento ideal para ti.</p>
 
-                        <a href="#">
-                            Ver entrenamiento →
-                        </a>
+            <form id="form-rutina" class="formulario-rutina">
+                <!-- Campo 1: Lugar de entrenamiento -->
+                <div class="campo">
+                    <label for="lugar">¿Dónde vas a entrenar?</label>
+                    <select id="lugar" name="lugar" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="casa">En Casa</option>
+                        <option value="gimnasio">Gimnasio</option>
+                        <option value="aire_libre">Aire Libre</option>
+                    </select>
+                </div>
 
-                    </div>
+                <!-- Campo 2: Nivel -->
+                <div class="campo">
+                    <label for="nivel">Tu nivel actual:</label>
+                    <select id="nivel" name="nivel" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="principiante">Principiante</option>
+                        <option value="intermedio">Intermedio</option>
+                        <option value="avanzado">Avanzado</option>
+                    </select>
+                </div>
 
-                </article>
+                <!-- Botón de envío -->
+                <button type="submit" class="btn-primario">Generar Rutina</button>
+            </form>
 
-
-                <article class="entrenamiento-card">
-
-                    <div class="entrenamiento-imagen">
-                        <span>CARDIO</span>
-                    </div>
-
-                    <div class="entrenamiento-contenido">
-
-                        <h3>Cardio intenso</h3>
-
-                        <p>
-                            Mejora tu resistencia y quema calorías con sesiones intensas.
-                        </p>
-
-                        <a href="#">
-                            Ver entrenamiento →
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <article class="entrenamiento-card">
-
-                    <div class="entrenamiento-imagen">
-                        <span>CALISTENIA</span>
-                    </div>
-
-                    <div class="entrenamiento-contenido">
-
-                        <h3>Calistenia</h3>
-
-                        <p>
-                            Entrena utilizando el peso de tu propio cuerpo.
-                        </p>
-
-                        <a href="#">
-                            Ver entrenamiento →
-                        </a>
-
-                    </div>
-
-                </article>
-
-            </div>
-
+            <!-- Aquí renderizaremos la rutina resultante con JavaScript -->
+            <div id="resultado-rutina" class="resultado-container"></div>
         </section>
 
         <!-- Contacto --> 

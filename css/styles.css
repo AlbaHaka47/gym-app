@@ -142,6 +142,7 @@ header nav {
     border: 1px solid var(--rosa);
     border-radius: 12px;
     padding: 30px 20px;
+    cursor: pointer;
     transition: 
         transform 0.3s, 
         border-color 0.3s;
@@ -207,12 +208,12 @@ footer {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit, minmax(280px, 1fr));
+        repeat(auto-fill, minmax(280px, 1fr));
 
     gap: 25px;
-
     max-width: 1200px;
     margin: 0 auto;
+    justify-content: center;
 }
 
 
@@ -220,13 +221,12 @@ footer {
 
 .entrenamiento-card {
     background-color: var(--card-bg);
-
     border-radius: 12px;
-
     overflow: hidden;
-
     border: 1px solid #333;
-
+    max-width: 380px;
+    width: 100%;
+    margin: 0 auto;
     transition:
         transform 0.3s,
         border-color 0.3s;
@@ -292,14 +292,128 @@ footer {
     text-decoration: underline;
 }
 
+/* SECCIÓN GENERADOR DE RUTINAS */
+#generador {
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#generador h2 {
+    color: var(--turquesa);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+#generador p {
+    margin-bottom: 30px;
+    color: var(--texto);
+}
+
+.formulario-rutina {
+    background-color: var(--card-bg);
+    border: 1px solid var(--rosa);
+    border-radius: 12px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    color: var(--amarillo);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.campo select {
+    background-color: var(--bg-oscuro);
+    color: var(--texto);
+    border: 1px solid var(--turquesa);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+.formulario-rutina .btn-primario {
+    align-self: center;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+}
+
+/* RESULTADO DE LA RUTINA GENERADA */
+.resultado-container {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.tarjeta-resultado {
+    background-color: var(--card-bg);
+    border: 2px solid var(--turquesa);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.tarjeta-resultado h3 {
+    color: var(--amarillo);
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.tarjeta-resultado ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tarjeta-resultado li {
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tarjeta-resultado li:last-child {
+    border-bottom: none;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 768px) {
 
     /* Ocultar navegación */
 
+    /* 1. Posicionar los enlaces como un menú desplegable */
     .nav-links {
-        display: none;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px; /* Ajusta según la altura de tu header */
+        right: 0;
+        width: 100%;
+        background-color: var(--card-bg);
+        padding: 20px 0;
+        border-bottom: 2px solid var(--turquesa);
+        
+        /* Ocultar menú por defecto haciéndolo invisible o desplazándolo */
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.4s ease-in-out;
+    }
+
+    /* 2. Estado ACTIVO: Cuando JavaScript le añade la clase .active */
+    .nav-links.active {
+        max-height: 300px; /* Suficiente altura para mostrar los links */
+        opacity: 1;
     }
 
     /* Mostrar hamburguesa */
@@ -315,6 +429,20 @@ footer {
         width: 25px;
         height: 3px;
         background-color: var(--turquesa);
+        transition: all 0.3s ease;
+    }
+
+    /* 4. ANIMACIÓN: Convertir hamburguesa en 'X' al estar activo */
+    .hamburguesa.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburguesa.active span:nth-child(2) {
+        opacity: 0; /* Oculta la barra del medio */
+    }
+
+    .hamburguesa.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
     }
 
     /* Hero */
