@@ -105,39 +105,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
         */
 
-    // 3. LÓGICA GENERADOR DE RUTINAS (CONECTADO A NODE.JS Y MYSQL)
+        // 3. LÓGICA GENERADOR DE RUTINAS (CON VALIDACIÓN Y COOKIES)
 
-    const formRutina = document.getElementById("form-rutina");
-    const contenedorResultado = document.getElementById("resultado-rutina");
+            const formRutina = document.getElementById("form-rutina");
+            const contenedorResultado = document.getElementById("resultado-rutina");
 
-    if (formRutina) {
-        formRutina.addEventListener("submit", function (e) {
-            e.preventDefault();
+            if (formRutina) {
+                formRutina.addEventListener("submit", function (e) {
+                e.preventDefault();
 
-            // Capturar valores de los <select>
             const lugar = document.getElementById("lugar").value;
             const nivel = document.getElementById("nivel").value;
 
-            // Mostrar un mensaje temporal mientras el servidor responde
             contenedorResultado.innerHTML = `
                 <div class="tarjeta-resultado">
-                    <p style="color: var(--amarillo);">Cargando tu rutina personalizada desde el servidor...</p>
+                    <p style="color: var(--amarillo);">Validando datos y consultando la base de datos...</p>
                 </div>
             `;
 
-            // Petición HTTP al servidor de Node.js
-            fetch(`http://localhost:5000/api/rutinas/generar?equipamiento=${lugar}&dificultad=${nivel}`)
-                .then(response => {
+            // 1. Guardar la última categoría en Cookie
+            fetch(`http://localhost:5000/api/preferencias?lugar=${lugar}`, { credentials: 'include' });
+
+            // 2. Petición principal de la rutina
+            fetch(`http://localhost:5000/api/rutinas/generar?equipamiento=${lugar}&dificultad=${nivel}`, {
+                credentials: 'include'
+            })
+                .then(async response => {
+                    const data = await response.json();
+                    
+                    // Si express-validator devolvió error (HTTP 400)
                     if (!response.ok) {
-                        throw new Error("Error en la respuesta de la API");
+                        throw data;
                     }
-                    return response.json();
+                    return data;
                 })
                 .then(data => {
-                    // Verificar si recibimos ejercicios desde MySQL
                     if (data.rutina && data.rutina.length > 0) {
                         let htmlEjercicios = "";
-                        
                         data.rutina.forEach(ejercicio => {
                             htmlEjercicios += `
                                 <li>
@@ -150,28 +154,38 @@ document.addEventListener("DOMContentLoaded", function () {
                         contenedorResultado.innerHTML = `
                             <div class="tarjeta-resultado">
                                 <h3>Tu Rutina Desde MySQL (${lugar.toUpperCase()} - ${nivel.toUpperCase()})</h3>
-                                <ul>
-                                    ${htmlEjercicios}
-                                </ul>
+                                <ul>${htmlEjercicios}</ul>
                             </div>
                         `;
                     } else {
                         contenedorResultado.innerHTML = `
                             <div class="tarjeta-resultado">
-                                <p>No se encontraron ejercicios en la base de datos para esa combinación.</p>
+                                <p>No se encontraron ejercicios en la base de datos.</p>
                             </div>
                         `;
                     }
                 })
                 .catch(error => {
-                    console.error("Error al conectar con la API:", error);
-                    contenedorResultado.innerHTML = `
-                        <div class="tarjeta-resultado">
-                            <p style="color: var(--rosa);">❌ Hubo un error al conectar con el servidor. Asegúrate de que Node.js esté corriendo.</p>
-                        </div>
-                    `;
+                    console.error("Error devuelto por la API:", error);
+
+                    // Si viene de express-validator, mostramos qué falló
+                    if (error.errores) {
+                        const listaErrores = error.errores.map(err => `<li>${err.msg}</li>`).join('');
+                        contenedorResultado.innerHTML = `
+                            <div class="tarjeta-resultado" style="border-color: var(--rosa);">
+                                <p style="color: var(--rosa);">⚠️ Error de validación:</p>
+                                <ul>${listaErrores}</ul>
+                            </div>
+                        `;
+                    } else {
+                        contenedorResultado.innerHTML = `
+                            <div class="tarjeta-resultado">
+                                <p style="color: var(--rosa);">❌ Error al conectar con el servidor.</p>
+                            </div>
+                        `;
+                    }
                 });
         });
-    }    
+    }
 
 });
