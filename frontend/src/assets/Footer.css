@@ -1,0 +1,15 @@
+footer {
+    background-color: var(--card-bg);
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    font-size: 12pt;
+    color: var(--texto);
+}
+
+.footer-logo {
+    text-decoration: none;
+    color: var(--turquesa);
+}

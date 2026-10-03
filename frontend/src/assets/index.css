@@ -1,0 +1,22 @@
+:root {
+    --bg-oscuro: #121216;
+    --card-bg: #1e1e24;
+    --turquesa: #00f5d4;
+    --rosa: #ff007f;
+    --amarillo: #fee440;
+    --texto: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-oscuro);
+    font-family: 'Verdana', sans-serif;
+
+}
+
+

@@ -1,0 +1,70 @@
+.section-heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+h2 {
+    color: var(--turquesa);
+    font-size: 30pt;
+    margin-bottom: 15px;
+}
+
+.section-heading span, .section-heading p{
+    color: var(--texto);
+    font-size: 18pt;
+    margin-bottom: 15px;
+
+}
+
+.places-grid {
+    display: grid;
+    grid-template-columns: 
+        repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px 40px;
+}
+
+.place-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--rosa);
+    border-radius: 12px;
+    padding: 30px 20px;
+    cursor: pointer;
+    transition: 
+        transform 0.3s, 
+        border-color 0.3s;
+}
+
+.place-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--turquesa);
+}
+
+.place-icon {
+    font-size: 40pt;
+}
+
+.place-card h3 {
+    color: var(--amarillo);
+    font-size: 20pt;
+    margin-bottom: 15px;
+}
+
+.place-card p {
+    color: var(--texto);
+    font-size: 14pt;
+    margin-bottom: 15px;
+}
+
+.place-card a {
+    color: var(--turquesa);
+    font-size: 16pt;
+    margin-bottom: 15px;
+}
+

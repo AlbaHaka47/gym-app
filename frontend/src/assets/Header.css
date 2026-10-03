@@ -1,0 +1,36 @@
+header nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--turquesa);
+    
+}
+
+.logo {
+    text-decoration: none;
+    color: var(--turquesa);
+    font-size: 25pt;
+    font-weight: bold;
+
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--texto);
+    font-size: 18pt;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--amarillo);
+}

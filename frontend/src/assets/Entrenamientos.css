@@ -1,0 +1,199 @@
+.training-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.training-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+.training-header h1 {
+    color: var(--rosa);
+    font-size: 30pt;
+    margin-bottom: 15px;
+}
+
+.training-header p{
+    color: var(--texto);
+    font-size: 18pt;
+    margin-bottom: 15px;
+
+}
+
+.training-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 40px;
+    
+}
+
+.training-content h2{
+    font-size: 20pt;
+}
+
+.filters {
+    background-color: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 20px;
+    width: 20%;
+    border: 1px solid #333;
+    border-radius: 5px;
+    gap: 15px;
+}
+
+.filters h3 {
+    color: var(--amarillo);
+    
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 10px;
+
+}
+
+.places, .difficulty, .muscles, .equipment {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 20px;
+    gap: 5px;
+}
+
+.muscles input {
+    margin-left: 40px;
+}
+
+.filters h4 {
+    color: var(--turquesa);
+    margin-left: 20px;
+}
+
+input {
+    width: 20px;
+}
+
+input:checked {
+    accent-color: var(--rosa);
+}
+
+label {
+    color: var(--texto);
+}
+
+.exercise-section {
+    background-color: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 80%;
+    border: 1px solid #333;
+    border-radius: 5px;
+    gap: 10px;
+}
+
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.exercise-card {
+    display: flex;    
+    border: 1px solid var(--rosa);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    transition: 
+        transform 0.3s, 
+        border-color 0.3s;
+    
+}
+
+.exercise-card.white::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:  
+        radial-gradient(circle at 15% 20%, rgba(214, 190, 245, 0.9) 0%, transparent 55%),
+        radial-gradient(circle at 85% 15%, rgba(200, 215, 250, 0.9) 0%, transparent 50%),
+        radial-gradient(circle at 70% 90%, rgba(165, 190, 245, 0.8) 0%, transparent 55%),
+        radial-gradient(circle at 10% 95%, rgba(240, 190, 235, 0.8) 0%, transparent 50%),
+        #d9cdf3;
+    
+}
+
+.exercise-card.pink::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 10% 25%, rgba(214, 120, 160, 0.9) 0%, transparent 55%),
+        radial-gradient(circle at 90% 20%, rgba(140, 160, 215, 0.9) 0%, transparent 55%),
+        radial-gradient(circle at 75% 100%, rgba(95, 110, 160, 0.9) 0%, transparent 55%),
+        radial-gradient(circle at 5% 100%, rgba(150, 70, 110, 0.8) 0%, transparent 50%),
+        #b07a9f;
+}
+
+.exercise-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--turquesa);
+}
+
+.exercise-info {
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.btn-cards {
+    display: flex;    
+    gap: 10px;   
+    margin-bottom: 50px;
+}
+
+.btn-cards p {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--amarillo);
+    color: #000;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 25px;
+    transition: 
+        transform 0.2s, 
+        background-color 0.2s;
+
+}
+
+.btn-cards p:hover {
+    transform: scale(1.05);
+    background-color: var(--turquesa);
+}
+
+
+.exercise-card h3 {
+    color: var(--accent);
+    font-size: 20pt;
+}
+
+
+
