@@ -1,9 +1,10 @@
 import '../assets/Hero.css';
+import { Link } from 'react-router-dom';
 
 function Hero() {
   return (
-    <section className="hero">
-      <div className="hero-content">
+    <section>
+      <div className="hero">
         <span className="hero-tag">
           ENTRENA. PLANIFICA. SUPÉRATE.
         </span>
@@ -24,9 +25,9 @@ function Hero() {
             Explorar ejercicios
           </a>
 
-          <a href="#rutina" className="button">
+          <Link to="/generar-rutina" className="button">
             Crear mi rutina
-          </a>
+          </Link>
         </div>
       </div>
     </section>

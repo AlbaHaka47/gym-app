@@ -5,11 +5,18 @@ footer {
     padding: 20px;
     margin-top: 40px;
     border-top: 1px solid #333;
-    font-size: 12pt;
+    font-size: 1rem;
     color: var(--texto);
 }
 
 .footer-logo {
     text-decoration: none;
     color: var(--turquesa);
+}
+
+@media (max-width: 768px) {
+    footer p{
+        display: none;
+    }
+
 }

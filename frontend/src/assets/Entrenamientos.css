@@ -4,27 +4,23 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    gap: 20px;
 }
 
 .training-header {
     display: flex;
     flex-direction: column;
-    justify-content: left;
-    margin-bottom: 20px;
     color: var(--accent);
 }
 
 .training-header h1 {
     color: var(--rosa);
-    font-size: 30pt;
-    margin-bottom: 15px;
+    font-size: 2.5rem;
 }
 
 .training-header p{
     color: var(--texto);
-    font-size: 18pt;
-    margin-bottom: 15px;
-
+    font-size: 1.2rem;
 }
 
 .training-content {
@@ -37,14 +33,14 @@
 }
 
 .training-content h2{
-    font-size: 20pt;
+    color: var(--turquesa);
+    font-size: 1.2rem;
 }
 
 .filters {
     background-color: var(--card-bg);
     display: flex;
     flex-direction: column;
-    align-items: left;
     padding: 20px;
     width: 20%;
     border: 1px solid #333;
@@ -60,7 +56,6 @@
 .filter-group {
     display: flex;
     flex-direction: column;
-    align-items: left;
     gap: 10px;
 
 }
@@ -81,15 +76,15 @@
     margin-left: 20px;
 }
 
-input {
+.filters input {
     width: 20px;
 }
 
-input:checked {
+.filters input:checked {
     accent-color: var(--rosa);
 }
 
-label {
+.filters label {
     color: var(--texto);
 }
 
@@ -173,8 +168,10 @@ label {
 .btn-cards p {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: var(--amarillo);
     color: #000;
+    font-size: 1rem;
     font-weight: bold;
     padding: 10px 15px;
     border-radius: 25px;
@@ -192,7 +189,7 @@ label {
 
 .exercise-card h3 {
     color: var(--accent);
-    font-size: 20pt;
+    font-size: 1.2rem;
 }
 
 

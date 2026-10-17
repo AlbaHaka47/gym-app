@@ -4,18 +4,17 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    gap: 20px;
 }
 
-h2 {
+.section-heading h2 {
     color: var(--turquesa);
-    font-size: 30pt;
-    margin-bottom: 15px;
+    font-size: 3rem;
 }
 
 .section-heading span, .section-heading p{
     color: var(--texto);
-    font-size: 18pt;
-    margin-bottom: 15px;
+    font-size: 1.2rem;
 
 }
 
@@ -47,24 +46,40 @@ h2 {
 }
 
 .place-icon {
-    font-size: 40pt;
+    font-size: 2rem;
 }
 
 .place-card h3 {
     color: var(--amarillo);
-    font-size: 20pt;
-    margin-bottom: 15px;
+    font-size: 2rem;
 }
 
 .place-card p {
     color: var(--texto);
-    font-size: 14pt;
+    font-size: 1rem;
     margin-bottom: 15px;
 }
 
 .place-card a {
     color: var(--turquesa);
-    font-size: 16pt;
-    margin-bottom: 15px;
+    font-size: 1rem;
 }
 
+@media (max-width: 768px) {
+
+    .section-heading {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .section-heading h2 {
+        font-size: 2.1rem;
+    }
+
+    .section-heading span, .section-heading p{
+        font-size: 1rem;
+
+    }
+}       

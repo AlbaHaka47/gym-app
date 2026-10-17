@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import Filters from '../components/training/Filters';
 import ExerciseList from '../components/training/ExerciseList';
 import '../assets/Entrenamientos.css';
 
 function Entrenamientos() {
+  const [searchParams] = useSearchParams();
+  const lugarInicial = searchParams.get('lugar') || 'todos';
+
   const [filtros, setFiltros] = useState({
-    lugar: "todos",
+    lugar: lugarInicial,
     dificultad: "todas",
     musculos: [],
     equipamiento: []
@@ -18,8 +22,7 @@ function Entrenamientos() {
       <div className="training-header">
 
         <h1>
-          Encuentra el ejercicio
-          <strong> que necesitas</strong>
+          Encuentra el ejercicio que necesitas
         </h1>
 
         <p>

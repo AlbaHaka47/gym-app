@@ -5,6 +5,8 @@
     --rosa: #ff007f;
     --amarillo: #fee440;
     --texto: #ffffff;
+
+    font-family: Verdana, serif;
 }
 
 * {
@@ -15,7 +17,6 @@
 
 body {
     background-color: var(--bg-oscuro);
-    font-family: 'Verdana', sans-serif;
 
 }
 

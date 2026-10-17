@@ -5,20 +5,23 @@ const lugares = [
   {
     id: 1,
     title: 'En casa',
+    lugar: 'casa',
     description: 'Entrena con poco o ningún equipamiento.',
-    icon: '🏠',
+    icon: 'pi pi-home',
   },
   {
     id: 2,
     title: 'Gimnasio',
+    lugar: 'gimnasio',
     description: 'Máquinas, pesas y todo el equipamiento.',
-    icon: '🏋️',
+    icon: 'pi pi-building',
   },
   {
     id: 3,
     title: 'Aire libre',
+    lugar: 'aire-libre',
     description: 'Calistenia, running y entrenamiento exterior.',
-    icon: '🌳',
+    icon: 'pi pi-sun',
   },
 ];
 
@@ -29,8 +32,7 @@ function TrainingPlaces() {
         <span>ELIGE TU ENTORNO</span>
 
         <h2>
-          ¿Dónde vas a entrenar
-          <strong> hoy?</strong>
+          ¿Dónde vas a entrenar hoy?
         </h2>
 
         <p>
@@ -43,7 +45,7 @@ function TrainingPlaces() {
         {lugares.map((lugar) => (
           <article className="place-card" key={lugar.id}>
             <div className="place-icon">
-              {lugar.icon}
+              <i className={lugar.icon}></i>
             </div>
 
             <h3>{lugar.title}</h3>
