@@ -1,3 +1,5 @@
+import '../../assets/Filters.css';
+
 import { Fragment } from 'react';
 import {
   LUGARES,

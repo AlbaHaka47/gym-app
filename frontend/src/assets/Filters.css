@@ -1,0 +1,49 @@
+.filters {
+    background-color: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    gap: 15px;
+}
+
+.filters h3 {
+    color: var(--amarillo);
+    
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.places, .difficulty, .muscles, .equipment {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 20px;
+    gap: 5px;
+}
+
+.muscles input {
+    margin-left: 40px;
+}
+
+.filters h4 {
+    color: var(--turquesa);
+    margin-left: 20px;
+}
+
+.filters input {
+    width: 20px;
+}
+
+.filters input:checked {
+    accent-color: var(--rosa);
+}
+
+.filters label {
+    color: var(--texto);
+}

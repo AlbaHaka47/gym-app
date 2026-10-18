@@ -1,3 +1,5 @@
+import '../../assets/RoutineExercise.css';
+
 function RoutineExercise({ item, ejercicio, onChange, onDelete, onMove, isFirst, isLast }) {
     const handleChange = (campo) => (e) => {
         const texto = e.target.value;

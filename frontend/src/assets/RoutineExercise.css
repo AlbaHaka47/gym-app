@@ -1,0 +1,55 @@
+.routine-exercise {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background-color: var(--bg-oscuro);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.routine-exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+.routine-exercise-name {
+    color: var(--texto);
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.routine-exercise-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.routine-exercise-fields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.routine-exercise-fields label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: var(--texto);
+    font-size: 0.7rem;
+}
+
+.routine-exercise-fields input {
+    width: 100%;
+    padding: 4px;
+    background-color: var(--card-bg);
+    color: var(--texto);
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.routine-exercise-fields input:focus {
+    outline: none;
+    border-color: var(--turquesa);
+}

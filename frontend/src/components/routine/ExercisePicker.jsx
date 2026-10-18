@@ -5,6 +5,8 @@ import { filtrarEjercicios } from '../../utils/filtrarEjercicios';
 import ExerciseCard from '../training/ExerciseCard';
 import SearchBar from '../SearchBar';
 
+import '../../assets/ExercisePicker.css';
+
 function ExercisePicker({ diaActivoNombre, onAdd }) {
   const [filtros, setFiltros] = useState({
     lugar: "todos",
@@ -77,7 +79,7 @@ function ExercisePicker({ diaActivoNombre, onAdd }) {
                 className="btn-add"
                 onClick={() => onAdd(exercise.id)}
               >
-                + Añadir
+                <i className="pi pi-plus" aria-hidden="true"></i> Añadir
               </button>
             </div>
           ))

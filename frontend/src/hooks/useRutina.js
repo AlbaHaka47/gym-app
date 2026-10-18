@@ -23,6 +23,9 @@ const PLANES_INICIALES = {
   ]),
 };
 
+const renumerar = (lista) =>
+  lista.map((dia, indice) => ({ ...dia, nombre: `Día ${indice + 1}` }));
+
 export function useRutina() {
   const [rutina, setRutina] = useState({
     nombre: "",
@@ -66,6 +69,35 @@ export function useRutina() {
           : dia
       )
     );
+  };
+
+  const cambiarDato = (campo, valor) => {
+    setRutina((prev) => ({ ...prev, [campo]: valor }));
+  };
+
+  const agregarDia = () => {
+    if (dias.length >= 7) return;
+
+    const nuevoDia = {
+      id: `dia-${crypto.randomUUID()}`,
+      nombre: '',
+      ejercicios: [],
+    };
+
+    actualizarDias((diasActuales) => renumerar([...diasActuales, nuevoDia]));
+    setDiaActivo(nuevoDia.id);
+  };
+
+  const eliminarDia = (diaId) => {
+    if (dias.length <= 1) return;
+
+    actualizarDias((diasActuales) =>
+      renumerar(diasActuales.filter((dia) => dia.id !== diaId))
+    );
+
+    if (diaActivo === diaId) {
+      setDiaActivo(dias.find((dia) => dia.id !== diaId).id);
+    }
   };
 
   const actualizarEjercicio = (diaId, uid, campo, valor) => {
@@ -120,6 +152,9 @@ export function useRutina() {
     diaActivo,
     setDiaActivo,
     cambiarModo,
+    cambiarDato,
+    agregarDia,
+    eliminarDia,
     agregarEjercicio,
     actualizarEjercicio,
     eliminarEjercicio,

@@ -1,0 +1,15 @@
+.routine-setup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.mode-buttons, .routine-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-generate, .btn-add-day {
+    align-self: flex-start;
+}

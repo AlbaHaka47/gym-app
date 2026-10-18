@@ -1,0 +1,65 @@
+.routine-page {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+}
+
+.routine-header h1 {
+    color: var(--rosa);
+    font-size: 2.5rem;
+}
+
+.routine-header p {
+    color: var(--texto);
+}
+
+.routine-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.picker, .routine {
+    background-color: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 20px;
+    gap: 15px;
+}
+
+.picker h2, .routine h2 {
+    color: var(--turquesa);
+    font-size: 1.2rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.field label {
+    color: var(--texto);
+}
+
+.field select, .field input {
+    background-color: var(--bg-oscuro);
+    color: var(--texto);
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+@media (max-width: 900px) {
+    .routine-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .routine-header h1 {
+        font-size: 1.8rem;
+    }
+}

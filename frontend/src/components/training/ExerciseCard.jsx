@@ -1,3 +1,5 @@
+import '../../assets/ExerciseCard.css';
+
 function ExerciseCard({ exercise }) {
   return (
     <article className={`exercise-card ${exercise.color}`}>

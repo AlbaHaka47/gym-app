@@ -1,0 +1,38 @@
+.day-column {
+    border: 1px dashed var(--rosa);
+    border-radius: 12px;
+    padding: 10px;
+    min-height: 150px;
+    cursor: pointer;
+}
+
+.day-column.activo {
+    border-style: solid;
+    border-color: var(--turquesa);
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.day-header h3 {
+    color: var(--amarillo);
+    font-size: 1rem;
+}
+
+.day-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.day-empty {
+    color: var(--texto);
+    opacity: 0.5;
+    font-size: 0.9rem;
+}

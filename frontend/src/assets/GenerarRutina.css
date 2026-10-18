@@ -262,6 +262,58 @@
     cursor: not-allowed;
 }
 
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.day-header h3 {
+    margin-bottom: 0;
+}
+
+.btn-remove-day {
+    background-color: var(--card-bg);
+    color: var(--texto);
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 2px 6px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-remove-day:hover {
+    border-color: var(--rosa);
+    color: var(--rosa);
+}
+
+.btn-remove-day i {
+    font-size: 0.8rem;
+}
+
+.btn-add-day {
+    align-self: flex-start;
+    background-color: var(--amarillo);
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-add-day:hover:not(:disabled) {
+    transform: scale(1.05);
+    background-color: var(--turquesa);
+}
+
+.btn-add-day:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 @media (max-width: 900px) {
     .routine-layout {
         grid-template-columns: 1fr;

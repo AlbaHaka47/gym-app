@@ -53,7 +53,7 @@ function TrainingPlaces() {
             <p>{lugar.description}</p>
 
             <Link to={`/entrenamientos?lugar=${lugar.lugar}`}>
-              Ver ejercicios →
+              Ver ejercicios <i className="pi pi-arrow-right" aria-hidden="true"></i>
             </Link>
           </article>
         ))}

@@ -1,0 +1,73 @@
+/* Botones amarillos en forma de pastilla */
+.mode-buttons button,
+.routine-actions button,
+.btn-generate,
+.btn-add,
+.btn-add-day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--amarillo);
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.mode-buttons button:hover,
+.routine-actions button:hover,
+.btn-generate:hover,
+.btn-add:hover,
+.btn-add-day:hover:not(:disabled) {
+    transform: scale(1.05);
+    background-color: var(--turquesa);
+}
+
+.mode-buttons button.activo {
+    background-color: var(--turquesa);
+}
+
+.btn-add-day:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Botones pequeños con solo un icono */
+.routine-exercise-actions button,
+.btn-remove-day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    color: var(--texto);
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 2px 6px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.routine-exercise-actions button i,
+.btn-remove-day i {
+    font-size: 0.8rem;
+}
+
+.routine-exercise-actions button:hover:not(:disabled) {
+    border-color: var(--turquesa);
+    color: var(--turquesa);
+}
+
+.routine-exercise-actions .btn-delete:hover:not(:disabled),
+.btn-remove-day:hover {
+    border-color: var(--rosa);
+    color: var(--rosa);
+}
+
+.routine-exercise-actions button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}

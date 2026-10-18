@@ -1,13 +1,38 @@
+import '../../assets/DayColumn.css';
+
 import RoutineExercise from './RoutineExercise';
 import { ejercicioPorId } from '../../utils/ejercicioPorId';
 
-function DayColumn({ dia, activo, onSelect, onUpdate, onDelete, onMove }) {
+function DayColumn({ dia, activo, onSelect, onUpdate, onDelete, onMove, onRemove }) {
+  const handleRemove = (e) => {
+    e.stopPropagation();
+
+    const confirmado =
+      dia.ejercicios.length === 0 ||
+      window.confirm(`¿Eliminar ${dia.nombre} y sus ejercicios?`);
+
+    if (confirmado) onRemove();
+  };
+
   return (
     <div
       className={`day-column ${activo ? 'activo' : ''}`}
       onClick={onSelect}
     >
-      <h3>{dia.nombre}</h3>
+      <div className="day-header">
+        <h3>{dia.nombre}</h3>
+
+        {onRemove && (
+          <button
+            type="button"
+            className="btn-remove-day"
+            aria-label={`Eliminar ${dia.nombre}`}
+            onClick={handleRemove}
+          >
+            <i className="pi pi-times" aria-hidden="true"></i>
+          </button>
+        )}
+      </div>
 
       {dia.ejercicios.length === 0 ? (
         <p className="day-empty">Aún no hay ejercicios</p>
