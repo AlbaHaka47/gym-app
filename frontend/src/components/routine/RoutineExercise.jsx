@@ -10,37 +10,34 @@ function RoutineExercise({ item, ejercicio, onChange, onDelete, onMove, isFirst,
             <span className="routine-exercise-name">{ejercicio.nombre}</span>
 
             <div
-            className="routine-exercise-actions"
-            onClick={(e) => e.stopPropagation()}
-            >
-            <button
-                type="button"
-                aria-label={`Subir ${ejercicio.nombre}`}
-                disabled={isFirst}
-                onClick={() => onMove(-1)}
-                onWheel={(e) => e.target.blur()}
-            >
-                ↑
-            </button>
-            <button
-                type="button"
-                aria-label={`Bajar ${ejercicio.nombre}`}
-                disabled={isLast}
-                onClick={() => onMove(1)}
-                onWheel={(e) => e.target.blur()}
-            >
-                ↓
-            </button>
-            <button
-                type="button"
-                className="btn-delete"
-                aria-label={`Eliminar ${ejercicio.nombre}`}
-                onClick={onDelete}
-                onWheel={(e) => e.target.blur()}
-            >
-                ✕
-            </button>
-            </div>
+                className="routine-exercise-actions"
+                onClick={(e) => e.stopPropagation()}
+                >
+                <button
+                    type="button"
+                    aria-label={`Subir ${ejercicio.nombre}`}
+                    disabled={isFirst}
+                    onClick={() => onMove(-1)}
+                >
+                    <i className="pi pi-arrow-up" aria-hidden="true"></i>
+                </button>
+                <button
+                    type="button"
+                    aria-label={`Bajar ${ejercicio.nombre}`}
+                    disabled={isLast}
+                    onClick={() => onMove(1)}
+                >
+                    <i className="pi pi-arrow-down" aria-hidden="true"></i>
+                </button>
+                <button
+                    type="button"
+                    className="btn-delete"
+                    aria-label={`Eliminar ${ejercicio.nombre}`}
+                    onClick={onDelete}
+                >
+                    <i className="pi pi-trash" aria-hidden="true"></i>
+                </button>
+                </div>
         </div>
 
         <div className="routine-exercise-fields">
