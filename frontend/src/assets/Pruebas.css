@@ -1,0 +1,138 @@
+.routine-page {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+}
+
+.routine-header h1 {
+    color: var(--rosa);
+    font-size: 2.5rem;
+}
+
+.routine-header p {
+    color: var(--texto);
+    font-size: 1.2rem;
+}
+
+.routine-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.picker, .routine {
+    background-color: var(--card-bg);
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.picker h2, .routine h2 {
+    color: var(--turquesa);
+    font-size: 1.2rem;
+}
+
+/* Campos de formulario */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.field label {
+    color: var(--texto);
+}
+
+.field select, .field input {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--bg-oscuro);
+    color: var(--texto);
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+/* Columna izquierda */
+.picker-filters {
+    display: flex;
+    gap: 10px;
+}
+
+.picker-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+/* Columna derecha */
+.routine-setup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.mode-buttons, .routine-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.mode-buttons button, .routine-actions button, .btn-generate {
+    background-color: var(--amarillo);
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.mode-buttons button:hover, .routine-actions button:hover, .btn-generate:hover {
+    transform: scale(1.05);
+    background-color: var(--turquesa);
+}
+
+.btn-generate {
+    align-self: flex-start;
+}
+
+.week-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+.day-column {
+    border: 1px dashed var(--rosa);
+    border-radius: 12px;
+    padding: 10px;
+    min-height: 150px;
+}
+
+.day-column h3 {
+    color: var(--amarillo);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.day-empty {
+    color: var(--texto);
+    opacity: 0.5;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+    .routine-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .routine-header h1 {
+        font-size: 1.8rem;
+    }
+}

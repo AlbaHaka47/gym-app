@@ -1,3 +1,10 @@
+function normalizar(texto) {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 export function filtrarEjercicios(ejercicios, filtros) {
   return ejercicios.filter((e) => {
     const lugarOk =
@@ -14,6 +21,10 @@ export function filtrarEjercicios(ejercicios, filtros) {
       filtros.equipamiento.length === 0 ||
       filtros.equipamiento.some((q) => e.equipamiento.includes(q));
 
-    return lugarOk && dificultadOk && musculosOk && equipamientoOk;
+    const busquedaOk =
+      !filtros.busqueda ||
+      normalizar(e.nombre).includes(normalizar(filtros.busqueda.trim()));
+
+    return lugarOk && dificultadOk && musculosOk && equipamientoOk && busquedaOk;
   });
 }

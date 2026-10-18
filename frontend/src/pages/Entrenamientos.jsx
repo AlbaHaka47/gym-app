@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import Filters from '../components/training/Filters';
 import ExerciseList from '../components/training/ExerciseList';
+import SearchBar from '../components/SearchBar'; 
 import '../assets/Entrenamientos.css';
 
 function Entrenamientos() {
@@ -13,7 +14,8 @@ function Entrenamientos() {
     lugar: lugarInicial,
     dificultad: "todas",
     musculos: [],
-    equipamiento: []
+    equipamiento: [],
+    busqueda: "" 
   });
 
   return (
@@ -33,16 +35,19 @@ function Entrenamientos() {
 
       <div className="training-content">
 
-        <Filters 
-          className="filters" 
-          filtros={filtros}
-          setFiltros={setFiltros} 
-        />
+        <Filters filtros={filtros} setFiltros={setFiltros} />
 
         <section className="exercise-section">
           <h2>Todos los ejercicios</h2>
 
-          <ExerciseList className="exercise-grid" filtros={filtros}/>
+          <SearchBar
+            value={filtros.busqueda}
+            onChange={(texto) =>
+              setFiltros((prev) => ({ ...prev, busqueda: texto }))
+            }
+          />
+
+          <ExerciseList filtros={filtros} />
           
         </section>
 

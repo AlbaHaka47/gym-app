@@ -31,6 +31,7 @@ header {
     font-size: 1.2rem;
     font-weight: 100;
     transition: color 0.3s;
+    white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -65,7 +66,7 @@ header {
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .menu-toggle {
         display: flex;
     }
