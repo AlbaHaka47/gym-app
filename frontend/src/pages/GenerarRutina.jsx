@@ -4,18 +4,26 @@ import RoutineBoard from '../components/routine/RoutineBoard';
 import '../assets/Entrenamientos.css';
 import '../assets/GenerarRutina.css';
 
+const MODOS = [
+  { id: 'lista', label: 'Lista' },
+  { id: 'semana', label: 'Semana' },
+  { id: 'dias', label: 'Por días' },
+];
+
 function GenerarRutina() {
   const {
     rutina,
+    dias,
     diaActivo,
     setDiaActivo,
+    cambiarModo,
     agregarEjercicio,
     actualizarEjercicio,
     eliminarEjercicio,
     moverEjercicio,
   } = useRutina();
 
-  const diaActivoNombre = rutina.dias.find((d) => d.id === diaActivo).nombre;
+  const diaActivoNombre = dias.find((d) => d.id === diaActivo).nombre;
 
   return (
     <main className="routine-page">
@@ -52,9 +60,17 @@ function GenerarRutina() {
           </div>
 
           <div className="mode-buttons">
-            <button type="button">Lista</button>
-            <button type="button">Semana</button>
-            <button type="button">Por días</button>
+            {MODOS.map((modo) => (
+              <button
+                key={modo.id}
+                type="button"
+                className={rutina.modo === modo.id ? 'activo' : ''}
+                aria-pressed={rutina.modo === modo.id}
+                onClick={() => cambiarModo(modo.id)}
+              >
+                {modo.label}
+              </button>
+            ))}
           </div>
 
           <button type="button" className="btn-generate">
@@ -62,7 +78,7 @@ function GenerarRutina() {
           </button>
 
           <RoutineBoard
-            dias={rutina.dias}
+            dias={dias}
             diaActivo={diaActivo}
             onSelectDay={setDiaActivo}
             onUpdate={actualizarEjercicio}

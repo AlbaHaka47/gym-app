@@ -131,6 +131,10 @@
     background-color: var(--turquesa);
 }
 
+.mode-buttons button.activo {
+    background-color: var(--turquesa);
+}
+
 .btn-generate {
     align-self: flex-start;
 }

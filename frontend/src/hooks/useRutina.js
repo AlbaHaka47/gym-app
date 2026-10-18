@@ -10,14 +10,45 @@ const DIAS_SEMANA = [
   { id: 'domingo', nombre: 'Domingo' },
 ];
 
+const crearDias = (lista) =>
+  lista.map((dia) => ({ ...dia, ejercicios: [] }));
+
+const PLANES_INICIALES = {
+  lista: crearDias([{ id: 'lista', nombre: 'Mi lista' }]),
+  semana: crearDias(DIAS_SEMANA),
+  dias: crearDias([
+    { id: 'dia-1', nombre: 'Día 1' },
+    { id: 'dia-2', nombre: 'Día 2' },
+    { id: 'dia-3', nombre: 'Día 3' },
+  ]),
+};
+
 export function useRutina() {
   const [rutina, setRutina] = useState({
     nombre: "",
     objetivo: "hipertrofia",
-    dias: DIAS_SEMANA.map((dia) => ({ ...dia, ejercicios: [] })),
+    modo: "semana",
+    planes: PLANES_INICIALES,
   });
 
   const [diaActivo, setDiaActivo] = useState("lunes");
+
+  const dias = rutina.planes[rutina.modo];
+
+  const cambiarModo = (nuevoModo) => {
+    setRutina((prev) => ({ ...prev, modo: nuevoModo }));
+    setDiaActivo(rutina.planes[nuevoModo][0].id);
+  };
+
+  const actualizarDias = (cambiar) => {
+    setRutina((prev) => ({
+      ...prev,
+      planes: {
+        ...prev.planes,
+        [prev.modo]: cambiar(prev.planes[prev.modo]),
+      },
+    }));
+  };
 
   const agregarEjercicio = (ejercicioId) => {
     const nuevo = {
@@ -28,20 +59,18 @@ export function useRutina() {
       descanso: 60,
     };
 
-    setRutina((prev) => ({
-      ...prev,
-      dias: prev.dias.map((dia) =>
+    actualizarDias((diasActuales) =>
+      diasActuales.map((dia) =>
         dia.id === diaActivo
           ? { ...dia, ejercicios: [...dia.ejercicios, nuevo] }
           : dia
-      ),
-    }));
+      )
+    );
   };
 
   const actualizarEjercicio = (diaId, uid, campo, valor) => {
-    setRutina((prev) => ({
-      ...prev,
-      dias: prev.dias.map((dia) =>
+    actualizarDias((diasActuales) =>
+      diasActuales.map((dia) =>
         dia.id === diaId
           ? {
               ...dia,
@@ -50,28 +79,26 @@ export function useRutina() {
               ),
             }
           : dia
-      ),
-    }));
+      )
+    );
   };
 
   const eliminarEjercicio = (diaId, uid) => {
-    setRutina((prev) => ({
-      ...prev,
-      dias: prev.dias.map((dia) =>
+    actualizarDias((diasActuales) =>
+      diasActuales.map((dia) =>
         dia.id === diaId
           ? {
               ...dia,
               ejercicios: dia.ejercicios.filter((item) => item.uid !== uid),
             }
           : dia
-      ),
-    }));
+      )
+    );
   };
 
   const moverEjercicio = (diaId, uid, direccion) => {
-    setRutina((prev) => ({
-      ...prev,
-      dias: prev.dias.map((dia) => {
+    actualizarDias((diasActuales) =>
+      diasActuales.map((dia) => {
         if (dia.id !== diaId) return dia;
 
         const indice = dia.ejercicios.findIndex((item) => item.uid === uid);
@@ -83,14 +110,16 @@ export function useRutina() {
         [copia[indice], copia[destino]] = [copia[destino], copia[indice]];
 
         return { ...dia, ejercicios: copia };
-      }),
-    }));
+      })
+    );
   };
 
   return {
     rutina,
+    dias,
     diaActivo,
     setDiaActivo,
+    cambiarModo,
     agregarEjercicio,
     actualizarEjercicio,
     eliminarEjercicio,
