@@ -13,3 +13,8 @@
 .btn-generate, .btn-add-day {
     align-self: flex-start;
 }
+
+.routine-notice {
+    color: var(--amarillo);
+    font-size: 0.9rem;
+}

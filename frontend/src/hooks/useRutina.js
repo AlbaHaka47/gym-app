@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ejercicioPorId } from '../utils/ejercicioPorId';
+import { normalizarRutina } from '../utils/normalizarRutina';
 
 const DIAS_SEMANA = [
   { id: 'lunes', nombre: 'Lunes' },
@@ -25,6 +25,7 @@ const PLANES_INICIALES = {
 };
 
 const RUTINA_INICIAL = {
+  id: null,
   nombre: "",
   objetivo: "hipertrofia",
   modo: "semana",
@@ -35,41 +36,21 @@ const DIA_INICIAL = "lunes";
 
 const CLAVE_BORRADOR = "anywherefit:borrador";
 
-// Quita los ejercicios que ya no existen en el catálogo
-const limpiarPlanes = (planes) =>
-  Object.fromEntries(
-    Object.entries(planes).map(([modo, dias]) => [
-      modo,
-      dias.map((dia) => ({
-        ...dia,
-        ejercicios: dia.ejercicios.filter((item) =>
-          ejercicioPorId(item.ejercicioId)
-        ),
-      })),
-    ])
-  );
-
 const cargarBorrador = () => {
   try {
     const texto = localStorage.getItem(CLAVE_BORRADOR);
     if (!texto) return null;
 
-    const { rutina, diaActivo } = JSON.parse(texto);
+    const datos = JSON.parse(texto);
+    const rutina = normalizarRutina(datos.rutina);
+    if (!rutina) return null;
 
-    const completos = ["lista", "semana", "dias"].every(
-      (modo) => Array.isArray(rutina.planes[modo]) && rutina.planes[modo].length > 0
-    );
-    if (!completos || !rutina.planes[rutina.modo]) return null;
+    const dias = rutina.planes[rutina.modo];
+    const diaActivo = dias.some((dia) => dia.id === datos.diaActivo)
+      ? datos.diaActivo
+      : dias[0].id;
 
-    const planes = limpiarPlanes(rutina.planes);
-    const diasModo = planes[rutina.modo];
-
-    return {
-      rutina: { ...rutina, planes },
-      diaActivo: diasModo.some((dia) => dia.id === diaActivo)
-        ? diaActivo
-        : diasModo[0].id,
-    };
+    return { rutina, diaActivo };
   } catch {
     return null;
   }
@@ -265,6 +246,14 @@ const renumerar = (lista) =>
       setDiaActivo(DIA_INICIAL);
     };
 
+    const cargarRutina = (guardada) => {
+      const normalizada = normalizarRutina(guardada);
+      if (!normalizada) return;
+
+      setRutina(normalizada);
+      setDiaActivo(normalizada.planes[normalizada.modo][0].id);
+    };
+
     return {
       rutina,
       dias,
@@ -280,5 +269,6 @@ const renumerar = (lista) =>
       moverEjercicio,
       reubicarEjercicio,
       vaciarRutina,
+      cargarRutina,
     };
   }

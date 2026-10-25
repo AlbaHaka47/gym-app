@@ -14,6 +14,8 @@ import { ejercicioPorId } from '../utils/ejercicioPorId';
 import ExercisePicker from '../components/routine/ExercisePicker';
 import RoutineBoard from '../components/routine/RoutineBoard';
 import ExerciseCard from '../components/training/ExerciseCard';
+import { useRutinasGuardadas } from '../hooks/useRutinasGuardadas';
+import SavedRoutines from '../components/routine/SavedRoutines';
 import '../assets/RoutinePage.css';
 import '../assets/RoutineSetup.css';
 import '../assets/RoutineButtons.css';
@@ -55,6 +57,7 @@ function GenerarRutina() {
     moverEjercicio,
     reubicarEjercicio,
     vaciarRutina,
+    cargarRutina,
   } = useRutina();
 
   const [arrastrado, setArrastrado] = useState(null);
@@ -68,18 +71,55 @@ function GenerarRutina() {
 
   const diaActivoNombre = dias.find((d) => d.id === diaActivo).nombre;
 
-  const hayContenido =
-    rutina.nombre !== '' ||
-    Object.values(rutina.planes).some((plan) =>
-      plan.some((dia) => dia.ejercicios.length > 0)
-    );
+  const { rutinas, guardarRutina, eliminarRutina } = useRutinasGuardadas();
+  const [aviso, setAviso] = useState('');
+
+  const hayEjercicios = Object.values(rutina.planes).some((plan) =>
+    plan.some((dia) => dia.ejercicios.length > 0)
+  );
+  const hayContenido = rutina.nombre !== '' || hayEjercicios;
+
+  const handleGuardar = () => {
+    const nombre = rutina.nombre.trim();
+
+    if (nombre === '') {
+      setAviso('Ponle un nombre a la rutina antes de guardarla.');
+      return;
+    }
+
+    const id = guardarRutina({ ...rutina, nombre });
+    cambiarDato('id', id);
+    setAviso(`Rutina «${nombre}» guardada en Mis rutinas.`);
+  };
+
+  const handleAbrir = (guardada) => {
+    if (hayContenido) {
+      const confirmado = window.confirm(
+        'Al abrir esta rutina se reemplazará la que tienes en pantalla. Si no la has guardado, se perderá. ¿Continuar?'
+      );
+      if (!confirmado) return;
+    }
+
+    cargarRutina(guardada);
+    setAviso('');
+  };
+
+  const handleEliminar = (guardada) => {
+    if (!window.confirm(`¿Eliminar «${guardada.nombre}» de Mis rutinas?`)) return;
+
+    eliminarRutina(guardada.id);
+    if (guardada.id === rutina.id) cambiarDato('id', null);
+  };
 
   const handleVaciar = () => {
     const confirmado = window.confirm(
       '¿Vaciar la rutina? Se borrarán el nombre y los ejercicios de los tres modos.'
     );
 
-    if (confirmado) vaciarRutina();
+    if (confirmado) {
+      vaciarRutina();
+      setAviso('');
+    }
   };
 
   const nombreDia = (over) =>
@@ -192,7 +232,10 @@ function GenerarRutina() {
                 <select
                   id="rutina-objetivo"
                   value={rutina.objetivo}
-                  onChange={(e) => cambiarDato("objetivo", e.target.value)}
+                  onChange={(e) => {
+                    cambiarDato("nombre", e.target.value);
+                    setAviso('');
+                  }}
                 >
                   <option value="fuerza">Fuerza</option>
                   <option value="hipertrofia">Hipertrofia</option>
@@ -242,7 +285,7 @@ function GenerarRutina() {
             )}
 
             <div className="routine-actions">
-              <button type="button">
+              <button type="button" onClick={handleGuardar} disabled={!hayEjercicios}>
                 <i className="pi pi-save" aria-hidden="true"></i> Guardar
               </button>
               <button type="button">
@@ -252,6 +295,12 @@ function GenerarRutina() {
                 <i className="pi pi-eraser" aria-hidden="true"></i> Vaciar
               </button>
             </div>
+
+            {aviso && (
+              <p className="routine-notice" role="status">
+                {aviso}
+              </p>
+            )}
           </section>
 
         </div>
@@ -270,6 +319,13 @@ function GenerarRutina() {
           ) : null}
         </DragOverlay>
       </DndContext>
+
+      <SavedRoutines
+        rutinas={rutinas}
+        idActual={rutina.id}
+        onOpen={handleAbrir}
+        onDelete={handleEliminar}
+      />
     </main>
   );
 }

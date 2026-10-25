@@ -3,7 +3,8 @@
 .routine-actions button,
 .btn-generate,
 .btn-add,
-.btn-add-day {
+.btn-add-day, 
+.btn-open {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -22,7 +23,8 @@
 .routine-actions button:hover:not(disabled),
 .btn-generate:hover,
 .btn-add:hover,
-.btn-add-day:hover:not(:disabled) {
+.btn-add-day:hover:not(:disabled),
+.btn-open:hover {
     transform: scale(1.05);
     background-color: var(--turquesa);
 }
@@ -38,7 +40,8 @@
 
 /* Botones pequeños con solo un icono */
 .routine-exercise-actions button,
-.btn-remove-day {
+.btn-remove-day,
+.saved-actions .btn-delete {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -52,7 +55,8 @@
 }
 
 .routine-exercise-actions button i,
-.btn-remove-day i {
+.btn-remove-day i,
+.saved-actions .btn-delete i {
     font-size: 0.8rem;
 }
 
@@ -62,7 +66,7 @@
 }
 
 .routine-exercise-actions .btn-delete:hover:not(:disabled),
-.btn-remove-day:hover {
+.btn-remove-day:hover, .saved-actions .btn-delete:hover {
     border-color: var(--rosa);
     color: var(--rosa);
 }
