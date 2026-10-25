@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { ejercicioPorId } from '../utils/ejercicioPorId';
 
 const DIAS_SEMANA = [
   { id: 'lunes', nombre: 'Lunes' },
@@ -23,198 +24,261 @@ const PLANES_INICIALES = {
   ]),
 };
 
+const RUTINA_INICIAL = {
+  nombre: "",
+  objetivo: "hipertrofia",
+  modo: "semana",
+  planes: PLANES_INICIALES,
+};
+
+const DIA_INICIAL = "lunes";
+
+const CLAVE_BORRADOR = "anywherefit:borrador";
+
+// Quita los ejercicios que ya no existen en el catálogo
+const limpiarPlanes = (planes) =>
+  Object.fromEntries(
+    Object.entries(planes).map(([modo, dias]) => [
+      modo,
+      dias.map((dia) => ({
+        ...dia,
+        ejercicios: dia.ejercicios.filter((item) =>
+          ejercicioPorId(item.ejercicioId)
+        ),
+      })),
+    ])
+  );
+
+const cargarBorrador = () => {
+  try {
+    const texto = localStorage.getItem(CLAVE_BORRADOR);
+    if (!texto) return null;
+
+    const { rutina, diaActivo } = JSON.parse(texto);
+
+    const completos = ["lista", "semana", "dias"].every(
+      (modo) => Array.isArray(rutina.planes[modo]) && rutina.planes[modo].length > 0
+    );
+    if (!completos || !rutina.planes[rutina.modo]) return null;
+
+    const planes = limpiarPlanes(rutina.planes);
+    const diasModo = planes[rutina.modo];
+
+    return {
+      rutina: { ...rutina, planes },
+      diaActivo: diasModo.some((dia) => dia.id === diaActivo)
+        ? diaActivo
+        : diasModo[0].id,
+    };
+  } catch {
+    return null;
+  }
+};
+
 const renumerar = (lista) =>
   lista.map((dia, indice) => ({ ...dia, nombre: `Día ${indice + 1}` }));
 
-export function useRutina() {
-  const [rutina, setRutina] = useState({
-    nombre: "",
-    objetivo: "hipertrofia",
-    modo: "semana",
-    planes: PLANES_INICIALES,
-  });
+  export function useRutina() {
+    const [inicial] = useState(cargarBorrador);
+    const [rutina, setRutina] = useState(inicial?.rutina ?? RUTINA_INICIAL);
+    const [diaActivo, setDiaActivo] = useState(inicial?.diaActivo ?? DIA_INICIAL);
 
-  const [diaActivo, setDiaActivo] = useState("lunes");
+    useEffect(() => {
+      try {
+        localStorage.setItem(
+          CLAVE_BORRADOR,
+          JSON.stringify({ rutina, diaActivo })
+        );
+      } catch {
+        // Sin espacio o con el almacenamiento bloqueado: seguimos sin guardar
+      }
+    }, [rutina, diaActivo]);
 
-  const dias = rutina.planes[rutina.modo];
+    const dias = rutina.planes[rutina.modo];
 
-  const cambiarModo = (nuevoModo) => {
-    setRutina((prev) => ({ ...prev, modo: nuevoModo }));
-    setDiaActivo(rutina.planes[nuevoModo][0].id);
-  };
-
-  const actualizarDias = (cambiar) => {
-    setRutina((prev) => ({
-      ...prev,
-      planes: {
-        ...prev.planes,
-        [prev.modo]: cambiar(prev.planes[prev.modo]),
-      },
-    }));
-  };
-
-  const agregarEjercicio = (ejercicioId, diaId = diaActivo, antesDeUid = null) => {
-    const nuevo = {
-      uid: crypto.randomUUID(),
-      ejercicioId,
-      series: 3,
-      reps: 10,
-      descanso: 60,
+    const cambiarModo = (nuevoModo) => {
+      setRutina((prev) => ({ ...prev, modo: nuevoModo }));
+      setDiaActivo(rutina.planes[nuevoModo][0].id);
     };
 
-    actualizarDias((diasActuales) =>
-      diasActuales.map((dia) => {
-        if (dia.id !== diaId) return dia;
-
-        const copia = [...dia.ejercicios];
-        const indice = copia.findIndex((item) => item.uid === antesDeUid);
-
-        copia.splice(indice === -1 ? copia.length : indice, 0, nuevo);
-
-        return { ...dia, ejercicios: copia };
-      })
-    );
-  };
-
-  const cambiarDato = (campo, valor) => {
-    setRutina((prev) => ({ ...prev, [campo]: valor }));
-  };
-
-  const agregarDia = () => {
-    if (dias.length >= 7) return;
-
-    const nuevoDia = {
-      id: `dia-${crypto.randomUUID()}`,
-      nombre: '',
-      ejercicios: [],
+    const actualizarDias = (cambiar) => {
+      setRutina((prev) => ({
+        ...prev,
+        planes: {
+          ...prev.planes,
+          [prev.modo]: cambiar(prev.planes[prev.modo]),
+        },
+      }));
     };
 
-    actualizarDias((diasActuales) => renumerar([...diasActuales, nuevoDia]));
-    setDiaActivo(nuevoDia.id);
-  };
+    const agregarEjercicio = (ejercicioId, diaId = diaActivo, antesDeUid = null) => {
+      const nuevo = {
+        uid: crypto.randomUUID(),
+        ejercicioId,
+        series: 3,
+        reps: 10,
+        descanso: 60,
+      };
 
-  const eliminarDia = (diaId) => {
-    if (dias.length <= 1) return;
+      actualizarDias((diasActuales) =>
+        diasActuales.map((dia) => {
+          if (dia.id !== diaId) return dia;
 
-    actualizarDias((diasActuales) =>
-      renumerar(diasActuales.filter((dia) => dia.id !== diaId))
+          const copia = [...dia.ejercicios];
+          const indice = copia.findIndex((item) => item.uid === antesDeUid);
+
+          copia.splice(indice === -1 ? copia.length : indice, 0, nuevo);
+
+          return { ...dia, ejercicios: copia };
+        })
     );
+    };
 
-    if (diaActivo === diaId) {
-      setDiaActivo(dias.find((dia) => dia.id !== diaId).id);
-    }
-  };
+    const cambiarDato = (campo, valor) => {
+      setRutina((prev) => ({ ...prev, [campo]: valor }));
+    };
 
-  const actualizarEjercicio = (diaId, uid, campo, valor) => {
-    actualizarDias((diasActuales) =>
-      diasActuales.map((dia) =>
-        dia.id === diaId
-          ? {
-              ...dia,
-              ejercicios: dia.ejercicios.map((item) =>
-                item.uid === uid ? { ...item, [campo]: valor } : item
-              ),
-            }
-          : dia
-      )
-    );
-  };
+    const agregarDia = () => {
+      if (dias.length >= 7) return;
 
-  const eliminarEjercicio = (diaId, uid) => {
-    actualizarDias((diasActuales) =>
-      diasActuales.map((dia) =>
-        dia.id === diaId
-          ? {
+      const nuevoDia = {
+        id: `dia-${crypto.randomUUID()}`,
+        nombre: '',
+        ejercicios: [],
+      };
+
+      actualizarDias((diasActuales) => renumerar([...diasActuales, nuevoDia]));
+      setDiaActivo(nuevoDia.id);
+    };
+
+    const eliminarDia = (diaId) => {
+      if (dias.length <= 1) return;
+
+      actualizarDias((diasActuales) =>
+        renumerar(diasActuales.filter((dia) => dia.id !== diaId))
+      );
+
+      if (diaActivo === diaId) {
+        setDiaActivo(dias.find((dia) => dia.id !== diaId).id);
+      }
+    };
+
+    const actualizarEjercicio = (diaId, uid, campo, valor) => {
+      actualizarDias((diasActuales) =>
+        diasActuales.map((dia) =>
+          dia.id === diaId
+            ? {
+                ...dia,
+                ejercicios: dia.ejercicios.map((item) =>
+                  item.uid === uid ? { ...item, [campo]: valor } : item
+                ),
+              }
+            : dia
+        )
+      );
+    };
+
+    const eliminarEjercicio = (diaId, uid) => {
+      actualizarDias((diasActuales) =>
+        diasActuales.map((dia) =>
+          dia.id === diaId
+            ? {
+                ...dia,
+                ejercicios: dia.ejercicios.filter((item) => item.uid !== uid),
+              }
+            : dia
+        )
+      );
+    };
+
+    const moverEjercicio = (diaId, uid, direccion) => {
+      actualizarDias((diasActuales) =>
+        diasActuales.map((dia) => {
+          if (dia.id !== diaId) return dia;
+
+          const indice = dia.ejercicios.findIndex((item) => item.uid === uid);
+          const destino = indice + direccion;
+
+          if (destino < 0 || destino >= dia.ejercicios.length) return dia;
+
+          const copia = [...dia.ejercicios];
+          [copia[indice], copia[destino]] = [copia[destino], copia[indice]];
+
+          return { ...dia, ejercicios: copia };
+        })
+      );
+    };
+
+    const reubicarEjercicio = (uid, diaDestinoId, sobreUid, debajo) => {
+      actualizarDias((diasActuales) => {
+        const diaOrigen = diasActuales.find((dia) =>
+          dia.ejercicios.some((item) => item.uid === uid)
+        );
+        if (!diaOrigen) return diasActuales;
+
+        // Mismo día: el ejercicio ocupa el sitio de aquel sobre el que se suelta
+        if (diaOrigen.id === diaDestinoId) {
+          return diasActuales.map((dia) => {
+            if (dia.id !== diaOrigen.id) return dia;
+
+            const copia = [...dia.ejercicios];
+            const desde = copia.findIndex((item) => item.uid === uid);
+            const hasta = sobreUid
+              ? copia.findIndex((item) => item.uid === sobreUid)
+              : copia.length - 1;
+
+            const [movido] = copia.splice(desde, 1);
+            copia.splice(hasta, 0, movido);
+
+            return { ...dia, ejercicios: copia };
+          });
+        }
+
+        // Otro día: se quita del origen y se inserta en el destino
+        const movido = diaOrigen.ejercicios.find((item) => item.uid === uid);
+
+        return diasActuales.map((dia) => {
+          if (dia.id === diaOrigen.id) {
+            return {
               ...dia,
               ejercicios: dia.ejercicios.filter((item) => item.uid !== uid),
-            }
-          : dia
-      )
-    );
-  };
+            };
+          }
 
-  const moverEjercicio = (diaId, uid, direccion) => {
-    actualizarDias((diasActuales) =>
-      diasActuales.map((dia) => {
-        if (dia.id !== diaId) return dia;
+          if (dia.id === diaDestinoId) {
+            const copia = [...dia.ejercicios];
+            const indiceSobre = copia.findIndex((item) => item.uid === sobreUid);
+            const posicion =
+              indiceSobre === -1 ? copia.length : indiceSobre + (debajo ? 1 : 0);
 
-        const indice = dia.ejercicios.findIndex((item) => item.uid === uid);
-        const destino = indice + direccion;
+            copia.splice(posicion, 0, movido);
+            return { ...dia, ejercicios: copia };
+          }
 
-        if (destino < 0 || destino >= dia.ejercicios.length) return dia;
-
-        const copia = [...dia.ejercicios];
-        [copia[indice], copia[destino]] = [copia[destino], copia[indice]];
-
-        return { ...dia, ejercicios: copia };
-      })
-    );
-  };
-
-  const reubicarEjercicio = (uid, diaDestinoId, sobreUid, debajo) => {
-    actualizarDias((diasActuales) => {
-      const diaOrigen = diasActuales.find((dia) =>
-        dia.ejercicios.some((item) => item.uid === uid)
-      );
-      if (!diaOrigen) return diasActuales;
-
-      // Mismo día: el ejercicio ocupa el sitio de aquel sobre el que se suelta
-      if (diaOrigen.id === diaDestinoId) {
-        return diasActuales.map((dia) => {
-          if (dia.id !== diaOrigen.id) return dia;
-
-          const copia = [...dia.ejercicios];
-          const desde = copia.findIndex((item) => item.uid === uid);
-          const hasta = sobreUid
-            ? copia.findIndex((item) => item.uid === sobreUid)
-            : copia.length - 1;
-
-          const [movido] = copia.splice(desde, 1);
-          copia.splice(hasta, 0, movido);
-
-          return { ...dia, ejercicios: copia };
+          return dia;
         });
-      }
-
-      // Otro día: se quita del origen y se inserta en el destino
-      const movido = diaOrigen.ejercicios.find((item) => item.uid === uid);
-
-      return diasActuales.map((dia) => {
-        if (dia.id === diaOrigen.id) {
-          return {
-            ...dia,
-            ejercicios: dia.ejercicios.filter((item) => item.uid !== uid),
-          };
-        }
-
-        if (dia.id === diaDestinoId) {
-          const copia = [...dia.ejercicios];
-          const indiceSobre = copia.findIndex((item) => item.uid === sobreUid);
-          const posicion =
-            indiceSobre === -1 ? copia.length : indiceSobre + (debajo ? 1 : 0);
-
-          copia.splice(posicion, 0, movido);
-          return { ...dia, ejercicios: copia };
-        }
-
-        return dia;
       });
-    });
-  };
+    };
 
-  return {
-    rutina,
-    dias,
-    diaActivo,
-    setDiaActivo,
-    cambiarModo,
-    cambiarDato,
-    agregarDia,
-    eliminarDia,
-    agregarEjercicio,
-    actualizarEjercicio,
-    eliminarEjercicio,
-    moverEjercicio,
-    reubicarEjercicio,
-  };
-}
+    const vaciarRutina = () => {
+      setRutina(RUTINA_INICIAL);
+      setDiaActivo(DIA_INICIAL);
+    };
+
+    return {
+      rutina,
+      dias,
+      diaActivo,
+      setDiaActivo,
+      cambiarModo,
+      cambiarDato,
+      agregarDia,
+      eliminarDia,
+      agregarEjercicio,
+      actualizarEjercicio,
+      eliminarEjercicio,
+      moverEjercicio,
+      reubicarEjercicio,
+      vaciarRutina,
+    };
+  }

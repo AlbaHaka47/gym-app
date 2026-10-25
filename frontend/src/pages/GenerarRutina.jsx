@@ -54,6 +54,7 @@ function GenerarRutina() {
     eliminarEjercicio,
     moverEjercicio,
     reubicarEjercicio,
+    vaciarRutina,
   } = useRutina();
 
   const [arrastrado, setArrastrado] = useState(null);
@@ -66,6 +67,20 @@ function GenerarRutina() {
   );
 
   const diaActivoNombre = dias.find((d) => d.id === diaActivo).nombre;
+
+  const hayContenido =
+    rutina.nombre !== '' ||
+    Object.values(rutina.planes).some((plan) =>
+      plan.some((dia) => dia.ejercicios.length > 0)
+    );
+
+  const handleVaciar = () => {
+    const confirmado = window.confirm(
+      '¿Vaciar la rutina? Se borrarán el nombre y los ejercicios de los tres modos.'
+    );
+
+    if (confirmado) vaciarRutina();
+  };
 
   const nombreDia = (over) =>
     dias.find((d) => d.id === diaDeDestino(over))?.nombre;
@@ -233,7 +248,7 @@ function GenerarRutina() {
               <button type="button">
                 <i className="pi pi-file-pdf" aria-hidden="true"></i> Exportar PDF
               </button>
-              <button type="button">
+              <button type="button" onClick={handleVaciar} disabled={!hayContenido}>
                 <i className="pi pi-eraser" aria-hidden="true"></i> Vaciar
               </button>
             </div>

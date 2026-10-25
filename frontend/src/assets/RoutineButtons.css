@@ -19,7 +19,7 @@
 }
 
 .mode-buttons button:hover,
-.routine-actions button:hover,
+.routine-actions button:hover:not(disabled),
 .btn-generate:hover,
 .btn-add:hover,
 .btn-add-day:hover:not(:disabled) {
@@ -69,5 +69,10 @@
 
 .routine-exercise-actions button:disabled {
     opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.routine-actions button:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
 }
