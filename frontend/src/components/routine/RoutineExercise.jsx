@@ -23,6 +23,7 @@ function RoutineExercise({
   } = useSortable({
     id: item.uid,
     data: { type: 'item', diaId, ejercicioId: item.ejercicioId },
+    attributes: { roleDescription: 'ejercicio ordenable' },
   });
 
   const style = {

@@ -4,6 +4,7 @@ import { LUGARES, DIFICULTADES } from '../../data/filterOptions';
 import { filtrarEjercicios } from '../../utils/filtrarEjercicios';
 import ExerciseCard from '../training/ExerciseCard';
 import SearchBar from '../SearchBar';
+import DraggableExercise from './DraggableExercise';
 
 import '../../assets/ExercisePicker.css';
 
@@ -72,16 +73,11 @@ function ExercisePicker({ diaActivoNombre, onAdd }) {
           <p className="picker-empty">No hay ejercicios con esos filtros.</p>
         ) : (
           ejerciciosFiltrados.map((exercise) => (
-            <div className="picker-item" key={exercise.id}>
-              <ExerciseCard exercise={exercise} />
-              <button
-                type="button"
-                className="btn-add"
-                onClick={() => onAdd(exercise.id)}
-              >
-                <i className="pi pi-plus" aria-hidden="true"></i> Añadir
-              </button>
-            </div>
+            <DraggableExercise
+              key={exercise.id}
+              exercise={exercise}
+              onAdd={onAdd}
+            />
           ))
         )}
       </div>

@@ -53,7 +53,7 @@ export function useRutina() {
     }));
   };
 
-  const agregarEjercicio = (ejercicioId) => {
+  const agregarEjercicio = (ejercicioId, diaId = diaActivo, antesDeUid = null) => {
     const nuevo = {
       uid: crypto.randomUUID(),
       ejercicioId,
@@ -63,11 +63,16 @@ export function useRutina() {
     };
 
     actualizarDias((diasActuales) =>
-      diasActuales.map((dia) =>
-        dia.id === diaActivo
-          ? { ...dia, ejercicios: [...dia.ejercicios, nuevo] }
-          : dia
-      )
+      diasActuales.map((dia) => {
+        if (dia.id !== diaId) return dia;
+
+        const copia = [...dia.ejercicios];
+        const indice = copia.findIndex((item) => item.uid === antesDeUid);
+
+        copia.splice(indice === -1 ? copia.length : indice, 0, nuevo);
+
+        return { ...dia, ejercicios: copia };
+      })
     );
   };
 
@@ -147,55 +152,55 @@ export function useRutina() {
   };
 
   const reubicarEjercicio = (uid, diaDestinoId, sobreUid, debajo) => {
-  actualizarDias((diasActuales) => {
-    const diaOrigen = diasActuales.find((dia) =>
-      dia.ejercicios.some((item) => item.uid === uid)
-    );
-    if (!diaOrigen) return diasActuales;
+    actualizarDias((diasActuales) => {
+      const diaOrigen = diasActuales.find((dia) =>
+        dia.ejercicios.some((item) => item.uid === uid)
+      );
+      if (!diaOrigen) return diasActuales;
 
-    // Mismo día: el ejercicio ocupa el sitio de aquel sobre el que se suelta
-    if (diaOrigen.id === diaDestinoId) {
+      // Mismo día: el ejercicio ocupa el sitio de aquel sobre el que se suelta
+      if (diaOrigen.id === diaDestinoId) {
+        return diasActuales.map((dia) => {
+          if (dia.id !== diaOrigen.id) return dia;
+
+          const copia = [...dia.ejercicios];
+          const desde = copia.findIndex((item) => item.uid === uid);
+          const hasta = sobreUid
+            ? copia.findIndex((item) => item.uid === sobreUid)
+            : copia.length - 1;
+
+          const [movido] = copia.splice(desde, 1);
+          copia.splice(hasta, 0, movido);
+
+          return { ...dia, ejercicios: copia };
+        });
+      }
+
+      // Otro día: se quita del origen y se inserta en el destino
+      const movido = diaOrigen.ejercicios.find((item) => item.uid === uid);
+
       return diasActuales.map((dia) => {
-        if (dia.id !== diaOrigen.id) return dia;
+        if (dia.id === diaOrigen.id) {
+          return {
+            ...dia,
+            ejercicios: dia.ejercicios.filter((item) => item.uid !== uid),
+          };
+        }
 
-        const copia = [...dia.ejercicios];
-        const desde = copia.findIndex((item) => item.uid === uid);
-        const hasta = sobreUid
-          ? copia.findIndex((item) => item.uid === sobreUid)
-          : copia.length - 1;
+        if (dia.id === diaDestinoId) {
+          const copia = [...dia.ejercicios];
+          const indiceSobre = copia.findIndex((item) => item.uid === sobreUid);
+          const posicion =
+            indiceSobre === -1 ? copia.length : indiceSobre + (debajo ? 1 : 0);
 
-        const [movido] = copia.splice(desde, 1);
-        copia.splice(hasta, 0, movido);
+          copia.splice(posicion, 0, movido);
+          return { ...dia, ejercicios: copia };
+        }
 
-        return { ...dia, ejercicios: copia };
+        return dia;
       });
-    }
-
-    // Otro día: se quita del origen y se inserta en el destino
-    const movido = diaOrigen.ejercicios.find((item) => item.uid === uid);
-
-    return diasActuales.map((dia) => {
-      if (dia.id === diaOrigen.id) {
-        return {
-          ...dia,
-          ejercicios: dia.ejercicios.filter((item) => item.uid !== uid),
-        };
-      }
-
-      if (dia.id === diaDestinoId) {
-        const copia = [...dia.ejercicios];
-        const indiceSobre = copia.findIndex((item) => item.uid === sobreUid);
-        const posicion =
-          indiceSobre === -1 ? copia.length : indiceSobre + (debajo ? 1 : 0);
-
-        copia.splice(posicion, 0, movido);
-        return { ...dia, ejercicios: copia };
-      }
-
-      return dia;
     });
-  });
-};
+  };
 
   return {
     rutina,

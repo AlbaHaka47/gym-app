@@ -31,6 +31,14 @@ const diaDeDestino = (over) => {
   return datos.type === 'dia' ? over.id : datos.diaId;
 };
 
+const nombreDe = (elemento) =>
+  ejercicioPorId(elemento.data.current.ejercicioId).nombre;
+
+const INSTRUCCIONES = {
+  draggable:
+    'Para coger un ejercicio pulsa espacio o intro. Muévelo con las flechas, suéltalo con espacio o intro y cancela con escape.',
+};
+
 function GenerarRutina() {
   const {
     rutina,
@@ -59,6 +67,26 @@ function GenerarRutina() {
 
   const diaActivoNombre = dias.find((d) => d.id === diaActivo).nombre;
 
+  const nombreDia = (over) =>
+    dias.find((d) => d.id === diaDeDestino(over))?.nombre;
+
+  const anuncios = {
+    onDragStart({ active }) {
+      return `Has cogido ${nombreDe(active)}.`;
+    },
+    onDragOver({ active, over }) {
+      if (!over) return `${nombreDe(active)} no está sobre ningún día.`;
+      return `${nombreDe(active)} está sobre ${nombreDia(over)}.`;
+    },
+    onDragEnd({ active, over }) {
+      if (!over) return `Has soltado ${nombreDe(active)} fuera de los días. No se ha añadido.`;
+      return `Has soltado ${nombreDe(active)} en ${nombreDia(over)}.`;
+    },
+    onDragCancel({ active }) {
+      return `Arrastre cancelado. ${nombreDe(active)} vuelve a su sitio.`;
+    },
+  };
+
   const handleDragStart = (event) => {
     const { type, ejercicioId } = event.active.data.current;
     setArrastrado({ tipo: type, ejercicio: ejercicioPorId(ejercicioId) });
@@ -82,7 +110,7 @@ function GenerarRutina() {
 
     // Tarjeta del catálogo: se añade al final del día de destino
     if (origen.type === 'catalogo') {
-      agregarEjercicio(origen.ejercicioId, diaDestinoId);
+      agregarEjercicio(origen.ejercicioId, diaDestinoId, sobreUid);
       return;
     }
 
@@ -112,6 +140,10 @@ function GenerarRutina() {
 
       <DndContext
         sensors={sensors}
+        accessibility={{
+          announcements: anuncios,
+          screenReaderInstructions: INSTRUCCIONES,
+        }}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
