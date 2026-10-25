@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -74,6 +74,13 @@ function GenerarRutina() {
   const { rutinas, guardarRutina, eliminarRutina } = useRutinasGuardadas();
   const [aviso, setAviso] = useState('');
 
+  useEffect(() => {
+    if (!aviso) return;
+
+    const temporizador = setTimeout(() => setAviso(''), 4000);
+    return () => clearTimeout(temporizador);
+  }, [aviso]);
+
   const hayEjercicios = Object.values(rutina.planes).some((plan) =>
     plan.some((dia) => dia.ejercicios.length > 0)
   );
@@ -92,7 +99,20 @@ function GenerarRutina() {
     setAviso(`Rutina «${nombre}» guardada en Mis rutinas.`);
   };
 
+  const handleGuardarCopia = () => {
+    const nombre = `${rutina.nombre.trim()} (copia)`;
+    const id = guardarRutina({ ...rutina, id: null, nombre });
+
+    cambiarDato('nombre', nombre);
+    cambiarDato('id', id);
+    setAviso(`Copia guardada como «${nombre}».`);
+  };
+
   const handleAbrir = (guardada) => {
+    cargarRutina(guardada);
+    setAviso('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     if (hayContenido) {
       const confirmado = window.confirm(
         'Al abrir esta rutina se reemplazará la que tienes en pantalla. Si no la has guardado, se perderá. ¿Continuar?'
@@ -288,6 +308,11 @@ function GenerarRutina() {
               <button type="button" onClick={handleGuardar} disabled={!hayEjercicios}>
                 <i className="pi pi-save" aria-hidden="true"></i> Guardar
               </button>
+              {rutina.id && (
+                <button type="button" onClick={handleGuardarCopia}>
+                  <i className="pi pi-copy" aria-hidden="true"></i> Guardar como copia
+                </button>
+              )}
               <button type="button">
                 <i className="pi pi-file-pdf" aria-hidden="true"></i> Exportar PDF
               </button>
