@@ -53,3 +53,38 @@
     outline: none;
     border-color: var(--turquesa);
 }
+
+.routine-exercise-dragging {
+    opacity: 0.4;
+}
+
+.routine-exercise-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.drag-handle {
+    display: inline-flex;
+    background: none;
+    color: var(--turquesa);
+    cursor: grab;
+    padding: 2px;
+    touch-action: none;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.drag-overlay-item {
+    background-color: var(--card-bg);
+    color: var(--texto);
+    border: 1px solid var(--turquesa);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: grabbing;
+}

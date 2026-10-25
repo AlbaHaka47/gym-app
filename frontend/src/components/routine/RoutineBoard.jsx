@@ -1,7 +1,16 @@
 import DayColumn from './DayColumn';
 import '../../assets/RoutineBoard.css';
 
-function RoutineBoard({ dias, diaActivo, onSelectDay, onUpdate, onDelete, onMove, onRemoveDay }) {
+function RoutineBoard({
+  dias,
+  diaActivo,
+  diaSobre,
+  onSelectDay,
+  onUpdate,
+  onDelete,
+  onMove,
+  onRemoveDay,
+}) {
   return (
     <div className="week-board">
       {dias.map((dia) => (
@@ -9,6 +18,7 @@ function RoutineBoard({ dias, diaActivo, onSelectDay, onUpdate, onDelete, onMove
           key={dia.id}
           dia={dia}
           activo={dia.id === diaActivo}
+          resaltado={dia.id === diaSobre}
           onSelect={() => onSelectDay(dia.id)}
           onUpdate={onUpdate}
           onDelete={onDelete}

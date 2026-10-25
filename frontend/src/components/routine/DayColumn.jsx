@@ -1,9 +1,24 @@
-import '../../assets/DayColumn.css';
-
+import { useDroppable } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import RoutineExercise from './RoutineExercise';
 import { ejercicioPorId } from '../../utils/ejercicioPorId';
+import '../../assets/DayColumn.css';
 
-function DayColumn({ dia, activo, onSelect, onUpdate, onDelete, onMove, onRemove }) {
+function DayColumn({
+  dia,
+  activo,
+  resaltado,
+  onSelect,
+  onUpdate,
+  onDelete,
+  onMove,
+  onRemove,
+}) {
+  const { setNodeRef } = useDroppable({
+    id: dia.id,
+    data: { type: 'dia' },
+  });
+
   const handleRemove = (e) => {
     e.stopPropagation();
 
@@ -16,7 +31,8 @@ function DayColumn({ dia, activo, onSelect, onUpdate, onDelete, onMove, onRemove
 
   return (
     <div
-      className={`day-column ${activo ? 'activo' : ''}`}
+      ref={setNodeRef}
+      className={`day-column ${activo ? 'activo' : ''} ${resaltado ? 'over' : ''}`}
       onClick={onSelect}
     >
       <div className="day-header">
@@ -34,24 +50,30 @@ function DayColumn({ dia, activo, onSelect, onUpdate, onDelete, onMove, onRemove
         )}
       </div>
 
-      {dia.ejercicios.length === 0 ? (
-        <p className="day-empty">Aún no hay ejercicios</p>
-      ) : (
-        <ul className="day-list">
-          {dia.ejercicios.map((item, index) => (
-            <RoutineExercise
-              key={item.uid}
-              item={item}
-              ejercicio={ejercicioPorId(item.ejercicioId)}
-              onChange={(campo, valor) => onUpdate(dia.id, item.uid, campo, valor)}
-              onDelete={() => onDelete(dia.id, item.uid)}
-              onMove={(direccion) => onMove(dia.id, item.uid, direccion)}
-              isFirst={index === 0}
-              isLast={index === dia.ejercicios.length - 1}
-            />
-          ))}
-        </ul>
-      )}
+      <SortableContext
+        items={dia.ejercicios.map((item) => item.uid)}
+        strategy={verticalListSortingStrategy}
+      >
+        {dia.ejercicios.length === 0 ? (
+          <p className="day-empty">Aún no hay ejercicios</p>
+        ) : (
+          <ul className="day-list">
+            {dia.ejercicios.map((item, index) => (
+              <RoutineExercise
+                key={item.uid}
+                item={item}
+                diaId={dia.id}
+                ejercicio={ejercicioPorId(item.ejercicioId)}
+                onChange={(campo, valor) => onUpdate(dia.id, item.uid, campo, valor)}
+                onDelete={() => onDelete(dia.id, item.uid)}
+                onMove={(direccion) => onMove(dia.id, item.uid, direccion)}
+                isFirst={index === 0}
+                isLast={index === dia.ejercicios.length - 1}
+              />
+            ))}
+          </ul>
+        )}
+      </SortableContext>
     </div>
   );
 }
