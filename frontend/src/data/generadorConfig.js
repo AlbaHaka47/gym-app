@@ -65,3 +65,6 @@ export const DIAS_SEMANA_POR_FRECUENCIA = {
 
 // En el modo Lista se genera un único bloque de este tipo
 export const PLANTILLA_LISTA = 'cuerpo-completo';
+
+// En aire libre también valen los ejercicios de casa que solo necesitan esto
+export const EQUIPAMIENTO_PORTATIL = ['sin-equipamiento', 'gomas'];

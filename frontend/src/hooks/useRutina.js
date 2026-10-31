@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react';
 import { normalizarRutina } from '../utils/normalizarRutina';
-
-const DIAS_SEMANA = [
-  { id: 'lunes', nombre: 'Lunes' },
-  { id: 'martes', nombre: 'Martes' },
-  { id: 'miercoles', nombre: 'Miércoles' },
-  { id: 'jueves', nombre: 'Jueves' },
-  { id: 'viernes', nombre: 'Viernes' },
-  { id: 'sabado', nombre: 'Sábado' },
-  { id: 'domingo', nombre: 'Domingo' },
-];
+import { DIAS_SEMANA } from '../data/diasSemana';
 
 const crearDias = (lista) =>
   lista.map((dia) => ({ ...dia, ejercicios: [] }));
