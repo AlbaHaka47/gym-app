@@ -1,12 +1,7 @@
 import '../../assets/SavedRoutines.css';
+import { OBJETIVOS } from '../../data/objetivos';
 
 const NOMBRES_MODO = { lista: 'Lista', semana: 'Semana', dias: 'Por días' };
-
-const NOMBRES_OBJETIVO = {
-  fuerza: 'Fuerza',
-  hipertrofia: 'Hipertrofia',
-  'perdida-grasa': 'Pérdida de grasa',
-};
 
 const contarEjercicios = (rutina) =>
   rutina.planes[rutina.modo].reduce(
@@ -45,7 +40,7 @@ function SavedRoutines({ rutinas, idActual, onOpen, onDelete }) {
                 <div className="saved-info">
                   <h3>{r.nombre}</h3>
                   <p>
-                    {NOMBRES_OBJETIVO[r.objetivo] ?? r.objetivo} ·{' '}
+                    {OBJETIVOS.find((o) => o.id === r.objetivo)?.label ?? r.objetivo} ·{' '}
                     {NOMBRES_MODO[r.modo]} · {total}{' '}
                     {total === 1 ? 'ejercicio' : 'ejercicios'}
                     {r.guardadaEn && ` · ${formatearFecha(r.guardadaEn)}`}

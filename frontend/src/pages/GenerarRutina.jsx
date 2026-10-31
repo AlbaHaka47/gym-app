@@ -16,6 +16,7 @@ import RoutineBoard from '../components/routine/RoutineBoard';
 import ExerciseCard from '../components/training/ExerciseCard';
 import { useRutinasGuardadas } from '../hooks/useRutinasGuardadas';
 import SavedRoutines from '../components/routine/SavedRoutines';
+import { OBJETIVOS } from '../data/objetivos';
 import '../assets/RoutinePage.css';
 import '../assets/RoutineSetup.css';
 import '../assets/RoutineButtons.css';
@@ -252,14 +253,13 @@ function GenerarRutina() {
                 <select
                   id="rutina-objetivo"
                   value={rutina.objetivo}
-                  onChange={(e) => {
-                    cambiarDato("nombre", e.target.value);
-                    setAviso('');
-                  }}
+                  onChange={(e) => cambiarDato("objetivo", e.target.value)}
                 >
-                  <option value="fuerza">Fuerza</option>
-                  <option value="hipertrofia">Hipertrofia</option>
-                  <option value="perdida-grasa">Pérdida de grasa</option>
+                  {OBJETIVOS.map((objetivo) => (
+                    <option key={objetivo.id} value={objetivo.id}>
+                      {objetivo.label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
