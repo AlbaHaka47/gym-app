@@ -17,6 +17,8 @@ import ExerciseCard from '../components/training/ExerciseCard';
 import { useRutinasGuardadas } from '../hooks/useRutinasGuardadas';
 import SavedRoutines from '../components/routine/SavedRoutines';
 import { OBJETIVOS } from '../data/objetivos';
+import GeneratorPanel from '../components/routine/GeneratorPanel';
+import { generarRutina } from '../utils/generarRutina';
 import '../assets/RoutinePage.css';
 import '../assets/RoutineSetup.css';
 import '../assets/RoutineButtons.css';
@@ -74,6 +76,7 @@ function GenerarRutina() {
 
   const { rutinas, guardarRutina, eliminarRutina } = useRutinasGuardadas();
   const [aviso, setAviso] = useState('');
+  const [panelAbierto, setPanelAbierto] = useState(false);
 
   useEffect(() => {
     if (!aviso) return;
@@ -141,6 +144,13 @@ function GenerarRutina() {
       vaciarRutina();
       setAviso('');
     }
+  };
+
+  const handleGenerar = (opciones) => {
+    // Provisional (6.4): de momento solo lo mostramos en la consola
+    const resultado = generarRutina({ ...opciones, modo: rutina.modo });
+    console.log('Opciones:', { ...opciones, modo: rutina.modo });
+    console.log('Resultado:', resultado);
   };
 
   const nombreDia = (over) =>
@@ -278,9 +288,24 @@ function GenerarRutina() {
               ))}
             </div>
 
-            <button type="button" className="btn-generate">
+            <button
+              type="button"
+              className="btn-generate"
+              aria-expanded={panelAbierto}
+              aria-controls="generator-panel"
+              onClick={() => setPanelAbierto((abierto) => !abierto)}
+            >
               <i className="pi pi-bolt" aria-hidden="true"></i> Generar automáticamente
             </button>
+
+            {panelAbierto && (
+              <GeneratorPanel
+                objetivo={rutina.objetivo}
+                modo={rutina.modo}
+                onGenerate={handleGenerar}
+                onClose={() => setPanelAbierto(false)}
+              />
+            )}
 
             <RoutineBoard
               dias={dias}

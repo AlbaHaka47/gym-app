@@ -1,0 +1,35 @@
+.generator {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: var(--bg-oscuro);
+    border: 1px solid var(--turquesa);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.generator-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+.generator-summary,
+.generator-hint {
+    color: var(--texto);
+    font-size: 0.9rem;
+}
+
+.generator-summary strong {
+    color: var(--amarillo);
+}
+
+.generator-hint {
+    opacity: 0.8;
+}
+
+.generator-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}

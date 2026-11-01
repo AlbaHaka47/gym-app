@@ -4,7 +4,8 @@
 .btn-generate,
 .btn-add,
 .btn-add-day, 
-.btn-open {
+.btn-open,
+.generator-actions button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -24,7 +25,8 @@
 .btn-generate:hover,
 .btn-add:hover,
 .btn-add-day:hover:not(:disabled),
-.btn-open:hover {
+.btn-open:hover,
+.generator-actions button:hover {
     transform: scale(1.05);
     background-color: var(--turquesa);
 }
