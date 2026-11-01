@@ -245,6 +245,18 @@ const renumerar = (lista) =>
       setDiaActivo(normalizada.planes[normalizada.modo][0].id);
     };
 
+    const reemplazarPlan = (nuevosDias, nombreSugerido) => {
+      setRutina((prev) => ({
+        ...prev,
+        nombre: prev.nombre.trim() === '' ? nombreSugerido : prev.nombre,
+        planes: { ...prev.planes, [prev.modo]: nuevosDias },
+      }));
+
+      const primero =
+        nuevosDias.find((dia) => dia.ejercicios.length > 0) ?? nuevosDias[0];
+      setDiaActivo(primero.id);
+    };
+
     return {
       rutina,
       dias,
@@ -261,5 +273,6 @@ const renumerar = (lista) =>
       reubicarEjercicio,
       vaciarRutina,
       cargarRutina,
+      reemplazarPlan,
     };
   }

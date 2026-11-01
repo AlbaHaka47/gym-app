@@ -29,6 +29,14 @@ const MODOS = [
   { id: 'dias', label: 'Por días', icon: 'pi-table' },
 ];
 
+const nombreAutomatico = (opciones, modo) => {
+  const objetivo = OBJETIVOS.find((o) => o.id === opciones.objetivo)?.label.toLowerCase();
+
+  return modo === 'lista'
+    ? `Rutina de ${objetivo}`
+    : `Rutina de ${objetivo} · ${opciones.diasPorSemana} días`;
+};
+
 // A partir del elemento sobre el que está el cursor, devuelve el id del día
 const diaDeDestino = (over) => {
   if (!over) return null;
@@ -61,6 +69,7 @@ function GenerarRutina() {
     reubicarEjercicio,
     vaciarRutina,
     cargarRutina,
+    reemplazarPlan,
   } = useRutina();
 
   const [arrastrado, setArrastrado] = useState(null);
@@ -77,6 +86,8 @@ function GenerarRutina() {
   const { rutinas, guardarRutina, eliminarRutina } = useRutinasGuardadas();
   const [aviso, setAviso] = useState('');
   const [panelAbierto, setPanelAbierto] = useState(false);
+  const [ultimaGenerada, setUltimaGenerada] = useState(null);
+  const [resultadoGenerador, setResultadoGenerador] = useState(null);
 
   useEffect(() => {
     if (!aviso) return;
@@ -125,6 +136,7 @@ function GenerarRutina() {
     }
 
     cargarRutina(guardada);
+    setResultadoGenerador(null);
     setAviso('');
   };
 
@@ -142,15 +154,28 @@ function GenerarRutina() {
 
     if (confirmado) {
       vaciarRutina();
+      setResultadoGenerador(null);
       setAviso('');
     }
   };
 
   const handleGenerar = (opciones) => {
-    // Provisional (6.4): de momento solo lo mostramos en la consola
+    const planTieneEjercicios = dias.some((dia) => dia.ejercicios.length > 0);
+    const sinCambios = dias === ultimaGenerada;
+
+    if (planTieneEjercicios && !sinCambios) {
+      const confirmado = window.confirm(
+        'Se reemplazarán los ejercicios del modo actual por una rutina nueva. ¿Continuar?'
+      );
+      if (!confirmado) return;
+    }
+
     const resultado = generarRutina({ ...opciones, modo: rutina.modo });
-    console.log('Opciones:', { ...opciones, modo: rutina.modo });
-    console.log('Resultado:', resultado);
+
+    reemplazarPlan(resultado.dias, nombreAutomatico(opciones, rutina.modo));
+    setUltimaGenerada(resultado.dias);
+    setResultadoGenerador({ avisos: resultado.avisos });
+    setAviso('');
   };
 
   const nombreDia = (over) =>
@@ -281,7 +306,10 @@ function GenerarRutina() {
                   type="button"
                   className={rutina.modo === modo.id ? 'activo' : ''}
                   aria-pressed={rutina.modo === modo.id}
-                  onClick={() => cambiarModo(modo.id)}
+                  onClick={() => {
+                    cambiarModo(modo.id);
+                    setResultadoGenerador(null);
+                  }}
                 >
                   <i className={`pi ${modo.icon}`} aria-hidden="true"></i> {modo.label}
                 </button>
@@ -305,6 +333,34 @@ function GenerarRutina() {
                 onGenerate={handleGenerar}
                 onClose={() => setPanelAbierto(false)}
               />
+            )}
+
+            {resultadoGenerador && (
+              <div className="generator-result" role="status">
+                <p>
+                  <i className="pi pi-check-circle" aria-hidden="true"></i> Rutina generada.
+                  Pulsa Generar otra vez para obtener otra variante.
+                </p>
+
+                {resultadoGenerador.avisos.length > 0 && (
+                  <ul>
+                    {resultadoGenerador.avisos.map((texto) => (
+                      <li key={texto}>
+                        <i className="pi pi-exclamation-triangle" aria-hidden="true"></i> {texto}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <button
+                  type="button"
+                  className="btn-dismiss"
+                  aria-label="Cerrar mensaje"
+                  onClick={() => setResultadoGenerador(null)}
+                >
+                  <i className="pi pi-times" aria-hidden="true"></i>
+                </button>
+              </div>
             )}
 
             <RoutineBoard

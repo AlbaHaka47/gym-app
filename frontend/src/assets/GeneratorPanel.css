@@ -33,3 +33,46 @@
     flex-wrap: wrap;
     gap: 10px;
 }
+
+.generator-result {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: var(--bg-oscuro);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 12px 40px 12px 12px;
+    color: var(--texto);
+    font-size: 0.9rem;
+}
+
+.generator-result .pi-check-circle {
+    color: var(--turquesa);
+    margin-right: 4px;
+}
+
+.generator-result ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.generator-result li {
+    color: var(--amarillo);
+}
+
+.btn-dismiss {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: var(--texto);
+    cursor: pointer;
+}
+
+.btn-dismiss:hover {
+    color: var(--rosa);
+}
