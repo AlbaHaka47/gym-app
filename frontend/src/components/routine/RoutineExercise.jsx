@@ -36,6 +36,8 @@ function RoutineExercise({
     onChange(campo, texto === "" ? "" : Number(texto));
   };
 
+  const esTiempo = ejercicio.tipo === 'tiempo';
+
   return (
     <li
       ref={setNodeRef}
@@ -102,11 +104,12 @@ function RoutineExercise({
         </label>
 
         <label>
-          Reps
+          {esTiempo ? 'Seg.' : 'Reps'}
           <input
             type="number"
             min="1"
-            max="50"
+            max={esTiempo ? 300 : 50}
+            step={esTiempo ? 5 : 1}
             value={item.reps}
             onChange={handleChange("reps")}
             onWheel={(e) => e.target.blur()}

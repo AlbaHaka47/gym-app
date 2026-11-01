@@ -189,6 +189,7 @@ const exercises = [
     grupoMuscular: "Core",
     musculos: ["abdominales"],
     equipamiento: ["sin-equipamiento"],
+    tipo: "tiempo",
     color: "white",
   },
   {
@@ -229,6 +230,7 @@ const exercises = [
     grupoMuscular: "Core",
     musculos: ["abdominales"],
     equipamiento: ["sin-equipamiento"],
+    tipo: "tiempo",
     color: "white",
   },
 
@@ -260,6 +262,7 @@ const exercises = [
     grupoMuscular: "Cuerpo completo",
     musculos: ["abdominales", "hombros", "cuadriceps"],
     equipamiento: ["sin-equipamiento"],
+    tipo: "tiempo",
     color: "pink",
   },
   {
@@ -300,6 +303,7 @@ const exercises = [
     grupoMuscular: "Cuerpo completo",
     musculos: ["brazos", "hombros", "espalda"],
     equipamiento: ["mancuernas"],
+    tipo: "tiempo",
     color: "pink",
   },
 
@@ -621,6 +625,7 @@ const exercises = [
     grupoMuscular: "Cuerpo completo",
     musculos: ["cuadriceps", "gluteos", "isquiotibiales", "gemelos"],
     equipamiento: ["sin-equipamiento"],
+    tipo: "tiempo",
     color: "pink",
   },
 ];

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { normalizarRutina } from '../utils/normalizarRutina';
 import { DIAS_SEMANA } from '../data/diasSemana';
+import { ejercicioPorId } from '../utils/ejercicioPorId';
 
 const crearDias = (lista) =>
   lista.map((dia) => ({ ...dia, ejercicios: [] }));
@@ -84,11 +85,13 @@ const renumerar = (lista) =>
     };
 
     const agregarEjercicio = (ejercicioId, diaId = diaActivo, antesDeUid = null) => {
+      const esTiempo = ejercicioPorId(ejercicioId)?.tipo === 'tiempo';
+
       const nuevo = {
         uid: crypto.randomUUID(),
         ejercicioId,
         series: 3,
-        reps: 10,
+        reps: esTiempo ? 30 : 10,
         descanso: 60,
       };
 

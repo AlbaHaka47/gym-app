@@ -91,6 +91,13 @@ function GeneratorPanel({ objetivo, modo, onGenerate, onClose }) {
         </p>
       )}
 
+      <p className="generator-disclaimer">
+        <i className="pi pi-info-circle" aria-hidden="true"></i>
+        Las rutinas generadas son orientativas y no sustituyen el consejo de un
+        profesional del ejercicio o de la salud. Ajusta el peso y la intensidad a tu
+        nivel y consulta antes de empezar si tienes alguna lesión o problema de salud.
+      </p>
+
       <div className="generator-actions">
         <button type="submit">
           <i className="pi pi-bolt" aria-hidden="true"></i> Generar

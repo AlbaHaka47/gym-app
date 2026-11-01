@@ -339,7 +339,8 @@ function GenerarRutina() {
               <div className="generator-result" role="status">
                 <p>
                   <i className="pi pi-check-circle" aria-hidden="true"></i> Rutina generada.
-                  Pulsa Generar otra vez para obtener otra variante.
+                  Es una propuesta orientativa: ajústala a tu nivel. Pulsa Generar otra vez
+                  para obtener otra variante.
                 </p>
 
                 {resultadoGenerador.avisos.length > 0 && (

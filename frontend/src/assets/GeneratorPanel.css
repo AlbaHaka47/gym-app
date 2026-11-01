@@ -76,3 +76,17 @@
 .btn-dismiss:hover {
     color: var(--rosa);
 }
+
+.generator-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--texto);
+    opacity: 0.75;
+    font-size: 0.8rem;
+}
+
+.generator-disclaimer i {
+    color: var(--turquesa);
+    margin-top: 2px;
+}

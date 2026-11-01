@@ -66,6 +66,7 @@ const parametrosDe = (objetivoId, nivelId) => {
   return {
     series: Math.max(2, objetivo.series + nivel.ajusteSeries),
     reps: objetivo.reps,
+    segundos: objetivo.segundos,
     descanso: objetivo.descanso,
   };
 }; 
@@ -140,7 +141,9 @@ export function generarRutina({ objetivo, nivel, lugar, diasPorSemana, modo }) {
       ejercicios: ordenarDia(elegidos).map((e) => ({
         uid: crypto.randomUUID(),
         ejercicioId: e.id,
-        ...parametros,
+        series: parametros.series,
+        reps: e.tipo === 'tiempo' ? parametros.segundos : parametros.reps,
+        descanso: parametros.descanso,
       })),
     };
   });
